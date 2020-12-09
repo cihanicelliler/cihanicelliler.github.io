@@ -4,7 +4,6 @@
   [class*="col-"] {
     float: left;
     padding: 15px;
-    margin-left: 15px;
   }
   .col-1 {width: 8.33%;}
   .col-2 {width: 16.66%;}
