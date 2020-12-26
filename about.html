@@ -4,39 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial,scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Cihan İçelliler</title>
+    <title>About</title>
     <link rel="icon" href="/worldwide.png" type="image/icon type" />
     <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Heebo:wght@500;700&family=Lobster&display=swap"
     />
-    <script>
-      document.addEventListener('DOMContentLoaded',function(){
-        document.addEventListener('click',event=>{
-          const element =event.target;
-          const element1=document.querySelector(".landing");
-          if(element.className=='nav-links2'){
-            element1.style.animationPlayState='running';
-          }
-        });
-      });
-    </script>
   </head>
   <body>
-    <nav>
-      <h1 id="logo">Cihan İçellier</h1>
-      <ul class="nav-list">
-        <li><a class="nav-links1" href="#">Home</a></li>
-        <li><a class="nav-links2" href="#">About</a></li>
-        <li><a class="nav-links3" href="#">Contact</a></li>
-      </ul>
-    </nav>
+    
     <main data-router-wrapper>
-      <section data-router-view="home" class="landing">
-        <div class="home-content">
-          <div class="home-presentation">
-            <h2 class="big-text">Cihan İçelliler</h2>
+      <section data-router-view="about" class="about">
+        <div class="about-content">
+          <div class="about-presentation">
+            <h2 class="big-text-about">Hello there, welcome to my site! I'm a full stack developer and also a Computer Engineering student at Kocaeli University. I dynamically design websites and improve myself day by day.</h2>
           </div>
         </div>
       </section>
@@ -61,5 +43,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="index.js"></script>
+    <script src="transition.js"></script>
   </body>
 </html>
