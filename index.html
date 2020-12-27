@@ -11,7 +11,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Heebo:wght@500;700&family=Lobster&display=swap"
     />
-    <script>
+    <!-- <script>
       document.addEventListener('DOMContentLoaded',function(){
         document.addEventListener('click',event=>{
           const element =event.target;
@@ -21,26 +21,51 @@
           }
         });
       });
-    </script>
+    </script> -->
   </head>
   <body>
-    <nav>
-      <h1 id="logo">Cihan İçellier</h1>
-      <ul class="nav-list">
-        <li><a class="nav-links1" href="#">Home</a></li>
-        <li><a class="nav-links2" href="#">About</a></li>
-        <li><a class="nav-links3" href="#">Contact</a></li>
-      </ul>
-    </nav>
+    
     <main data-router-wrapper>
       <section data-router-view="home" class="landing">
-        <div class="home-content">
-          <div class="home-presentation">
+        <!-- <div class="home-content">
+          <div class="home-presentation"> -->
+            <nav>
+              <h1 id="logo">Cihan İçellier</h1>
+              <ul class="nav-list">
+                <li><a class="nav-links1" href="#">Home</a></li>
+                <li><a class="nav-links2" href="#">About</a></li>
+                <li><a class="nav-links3" href="#">Contact</a></li>
+              </ul>
+            </nav>
             <h2 class="big-text">Cihan İçelliler</h2>
+          <!-- </div> -->
+        </section>
+      </main>
+          <div class="page">
+            <header tabindex="0">Cihan İçelliler</header>
+            <div id="nav-container">
+              <div class="bg"></div>
+              <div class="button" tabindex="0">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </div>
+              <div id="nav-content" tabindex="0">
+                <ul>
+                  <li><a class="drawer" href="#0">Home</a></li>
+                  <li><a class="drawer" href="#0">Services</a></li>
+                  <li><a class="drawer" href="#0">Blog</a></li>
+                  <li><a class="drawer" href="#0">About</a></li>
+                  <li><a class="drawer" href="#0">Contact</a></li><br>
+                  <a class="drawer" href="https://www.instagram.com/cihanicelliler/">&nbsp Instagram</a></li>
+                </ul>
+              </div>
+              <h2 class="big-text-s">Cihan İçelliler</h2>
+              <p class="text-s">Hello there, welcome to my site! I'm a full stack developer and also a Computer Engineering student at Kocaeli University. I dynamically design websites and improve myself day by day.</p>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
+
     <div class="intro">
       <div class="intro-text">
         <h1 class="hide">
