@@ -24,8 +24,7 @@
     background-size: cover;
     padding: 0rem 5rem;
     background: url("/hero.jpg");
-    width: 100%;
-    height: auto;
+    background-size: cover;
     /* animation-name: hide;
     animation-duration: 4s;
     animation-fill-mode: forwards;
@@ -102,7 +101,7 @@
     display: none;
   }
 }
-@media screen and (max-width: 500px), screen and (max-device-width: 500px) {
+@media screen and (max-width: 600px), screen and (max-device-width: 600px) {
   @import url("https://fonts.googleapis.com/css?family=Encode+Sans+Condensed:400,600");
 
   * {
@@ -128,7 +127,7 @@
     letter-spacing: 0.03em;
     color: #212121;
     background-image: url("/telephonebg.jpg");
-    background-size: 500px;
+    background-size: cover;
   }
 
   header {
@@ -429,7 +428,7 @@
   }
 
 }
-@media screen and (min-width:500px) and (max-width:1000px),screen and (min-device-width:500px) and (max-device-width:600px){
+@media screen and (min-width:600px) and (max-width:1000px),screen and (min-device-width:600px) and (max-device-width:1000px){
     @import url("https://fonts.googleapis.com/css?family=Encode+Sans+Condensed:400,600");
   
     * {
