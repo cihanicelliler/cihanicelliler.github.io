@@ -2,25 +2,24 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Cihan İçelliler | AI Engineer & Software Architect",
+  title: "Cihan İçelliler | Senior Software Engineer & AI Agent Specialist",
   description:
-    "AI Engineer specializing in autonomous agents, LangGraph, RAG systems, and scalable backends. Building Lecta AI and LLM-powered solutions.",
+    "Senior Software Engineer specializing in AI agent orchestration, distributed systems, and high-scale backends. Building the Self-Running Bank vision with LangGraph, DDD, and event-driven architecture.",
   keywords: [
-    "AI Engineer",
-    "Software Architect",
+    "Senior Software Engineer",
+    "AI Agent Specialist",
     "LangGraph",
-    "RAG",
+    "DDD",
     "Spring Boot",
-    "FastAPI",
-    "NLP",
-    "LLM",
+    "Distributed Systems",
+    "Event-Driven Architecture",
     "Lecta AI",
   ],
   authors: [{ name: "Cihan İçelliler" }],
   openGraph: {
-    title: "Cihan İçelliler | AI Engineer & Software Architect",
+    title: "Cihan İçelliler | Senior Software Engineer & AI Agent Specialist",
     description:
-      "Architecting Autonomous Intelligence — AI Engineer specializing in LangGraph, RAG, and scalable backends.",
+      "Architecting the Self-Running Bank — Senior Software Engineer specializing in AI agents, distributed systems, and high-scale backends.",
     type: "website",
     locale: "en_US",
   },
@@ -37,9 +36,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body
-        className="antialiased bg-background text-foreground"
-      >
+      <head>
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="antialiased bg-background text-foreground">
         {children}
       </body>
     </html>

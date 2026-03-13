@@ -3,62 +3,10 @@
 import { motion } from "framer-motion";
 import {
   Bot,
-  Server,
-  Cpu,
-  Layers,
-  Zap,
-  Globe,
+  Network,
+  Radio,
+  Workflow,
 } from "lucide-react";
-
-const projects = [
-  {
-    title: "Lecta AI",
-    description:
-      "Micro-SaaS platform leveraging LLM-powered agents for autonomous document processing. Built with LangGraph orchestration, RAG pipelines, and real-time streaming.",
-    tags: ["LangGraph", "RAG", "FastAPI", "React", "Supabase"],
-    icon: Bot,
-    featured: true,
-  },
-  {
-    title: "AI Agent Framework",
-    description:
-      "Custom autonomous agent framework with tool-use capabilities, memory management, and multi-step reasoning using LangGraph.",
-    tags: ["Python", "LangGraph", "LLM", "Agents"],
-    icon: Cpu,
-    featured: false,
-  },
-  {
-    title: "Scalable Backend Platform",
-    description:
-      "Enterprise-grade microservices architecture with DDD patterns, event-driven communication, and high-throughput API design.",
-    tags: ["Java", "Spring Boot", "Kafka", "PostgreSQL"],
-    icon: Server,
-    featured: false,
-  },
-];
-
-const skills = [
-  {
-    title: "AI Orchestration",
-    description: "LangGraph, RAG, LLM Agents, Prompt Engineering",
-    icon: Bot,
-  },
-  {
-    title: "Backend Engineering",
-    description: "Spring Boot, FastAPI, DDD, Microservices",
-    icon: Layers,
-  },
-  {
-    title: "Cloud & Infrastructure",
-    description: "Docker, Kubernetes, Supabase, AWS",
-    icon: Globe,
-  },
-  {
-    title: "Performance & Scale",
-    description: "Event-Driven Architecture, Caching, CI/CD",
-    icon: Zap,
-  },
-];
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -80,7 +28,7 @@ export default function BentoGrid() {
           transition={{ duration: 0.5 }}
           className="mb-16"
         >
-          <p className="text-sm font-mono text-accent-foreground mb-2">
+          <p className="text-sm font-mono text-cyan mb-2">
             {"// projects & expertise"}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
@@ -90,94 +38,144 @@ export default function BentoGrid() {
 
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Featured project - spans 2 cols */}
-          {projects
-            .filter((p) => p.featured)
-            .map((project, i) => (
-              <motion.div
-                key={project.title}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={cardVariants}
-                whileHover={{ y: -4 }}
-                className="group md:col-span-2 p-6 md:p-8 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent-foreground/30 transition-all duration-300"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <project.icon className="w-8 h-8 text-accent-foreground" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold mb-3">
-                  {project.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs font-mono px-3 py-1 rounded-full bg-muted text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+          {/* Lecta AI — Featured, spans 2 cols + 2 rows */}
+          <motion.div
+            custom={0}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={cardVariants}
+            whileHover={{ y: -4, scale: 1.01 }}
+            className="group md:col-span-2 lg:row-span-2 p-6 md:p-8 rounded-2xl glass glass-hover transition-all duration-300"
+          >
+            <div className="flex items-start justify-between mb-6">
+              <div className="w-12 h-12 rounded-xl bg-cyan/10 border border-cyan/20 flex items-center justify-center">
+                <Bot className="w-6 h-6 text-cyan" />
+              </div>
+              <span className="text-xs font-mono px-3 py-1 rounded-full bg-cyan/10 text-cyan border border-cyan/20">
+                Micro-SaaS
+              </span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold mb-3">
+              Lecta AI
+            </h3>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              Micro-SaaS platform leveraging LLM-powered agents for autonomous
+              document processing. Built with LangGraph orchestration, RAG
+              pipelines, and real-time streaming. Enables intelligent document
+              understanding at scale with multi-agent workflows.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {["LangGraph", "RAG", "FastAPI", "React", "Supabase", "LLM Agents"].map(
+                (tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs font-mono px-3 py-1 rounded-full bg-muted/50 text-muted-foreground"
+                  >
+                    {tag}
+                  </span>
+                )
+              )}
+            </div>
+          </motion.div>
 
-          {/* Other projects */}
-          {projects
-            .filter((p) => !p.featured)
-            .map((project, i) => (
-              <motion.div
-                key={project.title}
-                custom={i + 1}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={cardVariants}
-                whileHover={{ y: -4 }}
-                className="group p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent-foreground/30 transition-all duration-300"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <project.icon className="w-6 h-6 text-accent-foreground" />
-                </div>
-                <h3 className="text-lg font-bold mb-2">{project.title}</h3>
+          {/* Expertise: Distributed Systems */}
+          <motion.div
+            custom={1}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={cardVariants}
+            whileHover={{ y: -4, scale: 1.02 }}
+            className="group p-6 rounded-2xl glass glass-hover transition-all duration-300"
+          >
+            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-4">
+              <Network className="w-5 h-5 text-indigo-400" />
+            </div>
+            <h4 className="font-bold text-base mb-2">Distributed Systems</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Microservices architecture, DDD patterns, high-throughput data
+              pipelines, and scalable backend design for millions of users.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-4">
+              {["Java", "Spring Boot", "Kafka", "gRPC"].map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs font-mono px-2 py-1 rounded-full bg-muted/50 text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Expertise: Event-Driven Architecture */}
+          <motion.div
+            custom={2}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={cardVariants}
+            whileHover={{ y: -4, scale: 1.02 }}
+            className="group p-6 rounded-2xl glass glass-hover transition-all duration-300"
+          >
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
+              <Radio className="w-5 h-5 text-emerald-400" />
+            </div>
+            <h4 className="font-bold text-base mb-2">Event-Driven Architecture</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              CQRS, event sourcing, real-time streaming pipelines, and
+              asynchronous communication between distributed services.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-4">
+              {["Kafka", "Redis", "RabbitMQ", "CQRS"].map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs font-mono px-2 py-1 rounded-full bg-muted/50 text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Expertise: AI Workflows */}
+          <motion.div
+            custom={3}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={cardVariants}
+            whileHover={{ y: -4, scale: 1.02 }}
+            className="group md:col-span-2 lg:col-span-3 p-6 md:p-8 rounded-2xl glass glass-hover transition-all duration-300"
+          >
+            <div className="flex flex-col md:flex-row md:items-start gap-6">
+              <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center flex-shrink-0">
+                <Workflow className="w-5 h-5 text-violet-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-base mb-2">AI Workflows &amp; Agent Orchestration</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  {project.description}
+                  Multi-agent orchestration with LangGraph, RAG pipelines for
+                  document intelligence, tool-use capabilities, and autonomous
+                  reasoning chains. Building AI systems that operate independently
+                  with human-level decision making.
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs font-mono px-2 py-1 rounded-full bg-muted text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="flex flex-wrap gap-1.5">
+                  {["LangGraph", "Python", "RAG", "LLM Agents", "Prompt Engineering", "FastAPI"].map(
+                    (tag) => (
+                      <span
+                        key={tag}
+                        className="text-xs font-mono px-2 py-1 rounded-full bg-muted/50 text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    )
+                  )}
                 </div>
-              </motion.div>
-            ))}
-
-          {/* Skills cards */}
-          {skills.map((skill, i) => (
-            <motion.div
-              key={skill.title}
-              custom={i + 3}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={cardVariants}
-              className="p-5 rounded-2xl border border-border bg-card/30 hover:bg-card/60 transition-colors duration-300"
-            >
-              <skill.icon className="w-5 h-5 text-accent-foreground mb-3" />
-              <h4 className="font-semibold text-sm mb-1">{skill.title}</h4>
-              <p className="text-xs text-muted-foreground">
-                {skill.description}
-              </p>
-            </motion.div>
-          ))}
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
