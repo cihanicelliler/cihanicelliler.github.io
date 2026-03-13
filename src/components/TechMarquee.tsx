@@ -13,6 +13,7 @@ const techCategories = [
       { name: "REST APIs", color: "#61affe" },
       { name: "DDD", color: "#e5e7eb" },
     ],
+    summary: "Java, Spring Boot, PostgreSQL, REST APIs, DDD",
   },
   {
     category: "AI",
@@ -25,6 +26,7 @@ const techCategories = [
       { name: "RAG", color: "#a78bfa" },
       { name: "LLM Agents", color: "#c084fc" },
     ],
+    summary: "LangGraph, Python, FastAPI, PyTorch, RAG, LLM Agents",
   },
   {
     category: "Infrastructure",
@@ -37,6 +39,7 @@ const techCategories = [
       { name: "Kubernetes", color: "#326ce5" },
       { name: "Supabase", color: "#3ecf8e" },
     ],
+    summary: "Kafka, Redis, MongoDB, Docker, Kubernetes, Supabase",
   },
 ];
 
@@ -47,7 +50,7 @@ function TechBadge({ name, color }: { name: string; color: string }) {
     <div className="group/badge flex items-center gap-2 px-5 py-2.5 rounded-full glass transition-all duration-300 whitespace-nowrap select-none hover:border-cyan/30 hover:shadow-[0_0_16px_rgba(6,182,212,0.12)]">
       <span
         className="w-2.5 h-2.5 rounded-full flex-shrink-0 transition-shadow duration-300 group-hover/badge:shadow-[0_0_8px]"
-        style={{ backgroundColor: color, boxShadow: undefined }}
+        style={{ backgroundColor: color }}
       />
       <span className="text-sm font-medium text-foreground">{name}</span>
     </div>
@@ -95,7 +98,7 @@ export default function TechMarquee() {
                 {cat.category}
               </span>
               <span className="text-xs text-muted-foreground/60">
-                {cat.items.map((t) => t.name).join(", ")}
+                {cat.summary}
               </span>
             </div>
           ))}
