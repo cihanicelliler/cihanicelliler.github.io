@@ -1,9 +1,21 @@
 "use client";
 
+import { type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Send, Terminal, Mail, MapPin } from "lucide-react";
 
 export default function Contact() {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value;
+    const subject = `Portfolio Contact from ${name}`;
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    window.location.href = `mailto:icellilercihan@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
   return (
     <section id="contact" className="py-24 md:py-32">
       <div className="max-w-6xl mx-auto px-6">
@@ -102,8 +114,7 @@ export default function Contact() {
             className="rounded-2xl border border-border bg-card/50 p-6 md:p-8"
           >
             <form
-              action="#"
-              method="POST"
+              onSubmit={handleSubmit}
               className="space-y-5"
             >
               <div>

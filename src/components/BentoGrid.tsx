@@ -8,7 +8,6 @@ import {
   Layers,
   Zap,
   Globe,
-  ArrowUpRight,
 } from "lucide-react";
 
 const projects = [
@@ -19,7 +18,6 @@ const projects = [
     tags: ["LangGraph", "RAG", "FastAPI", "React", "Supabase"],
     icon: Bot,
     featured: true,
-    href: "#",
   },
   {
     title: "AI Agent Framework",
@@ -28,7 +26,6 @@ const projects = [
     tags: ["Python", "LangGraph", "LLM", "Agents"],
     icon: Cpu,
     featured: false,
-    href: "#",
   },
   {
     title: "Scalable Backend Platform",
@@ -37,7 +34,6 @@ const projects = [
     tags: ["Java", "Spring Boot", "Kafka", "PostgreSQL"],
     icon: Server,
     featured: false,
-    href: "#",
   },
 ];
 
@@ -98,20 +94,18 @@ export default function BentoGrid() {
           {projects
             .filter((p) => p.featured)
             .map((project, i) => (
-              <motion.a
+              <motion.div
                 key={project.title}
-                href={project.href}
                 custom={i}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={cardVariants}
                 whileHover={{ y: -4 }}
-                className="group md:col-span-2 p-6 md:p-8 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent-foreground/30 transition-all duration-300 block"
+                className="group md:col-span-2 p-6 md:p-8 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent-foreground/30 transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
                   <project.icon className="w-8 h-8 text-accent-foreground" />
-                  <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-accent-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold mb-3">
                   {project.title}
@@ -129,27 +123,25 @@ export default function BentoGrid() {
                     </span>
                   ))}
                 </div>
-              </motion.a>
+              </motion.div>
             ))}
 
           {/* Other projects */}
           {projects
             .filter((p) => !p.featured)
             .map((project, i) => (
-              <motion.a
+              <motion.div
                 key={project.title}
-                href={project.href}
                 custom={i + 1}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={cardVariants}
                 whileHover={{ y: -4 }}
-                className="group p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent-foreground/30 transition-all duration-300 block"
+                className="group p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent-foreground/30 transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
                   <project.icon className="w-6 h-6 text-accent-foreground" />
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-accent-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">{project.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
@@ -165,7 +157,7 @@ export default function BentoGrid() {
                     </span>
                   ))}
                 </div>
-              </motion.a>
+              </motion.div>
             ))}
 
           {/* Skills cards */}
