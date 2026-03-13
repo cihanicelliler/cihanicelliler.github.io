@@ -102,7 +102,7 @@ export default function Contact() {
             className="rounded-2xl border border-border bg-card/50 p-6 md:p-8"
           >
             <form
-              action="https://formspree.io/f/placeholder"
+              action="#"
               method="POST"
               className="space-y-5"
             >
