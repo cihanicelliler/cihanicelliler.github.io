@@ -34,9 +34,9 @@ export default function Header() {
     >
       <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#home" className="flex items-center gap-2 group">
-          <Brain className="w-6 h-6 text-accent-foreground group-hover:text-accent transition-colors" />
+          <Brain className="w-6 h-6 text-cyan group-hover:text-accent transition-colors" />
           <span className="font-mono text-lg font-semibold tracking-tight">
-            cihan<span className="text-accent-foreground">.dev</span>
+            cihan<span className="text-cyan">.dev</span>
           </span>
         </a>
 
@@ -49,7 +49,7 @@ export default function Header() {
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-accent-foreground group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-cyan group-hover:w-full transition-all duration-300" />
               </a>
             </li>
           ))}

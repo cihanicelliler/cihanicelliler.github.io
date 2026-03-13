@@ -26,7 +26,7 @@ export default function Contact() {
           transition={{ duration: 0.5 }}
           className="mb-16"
         >
-          <p className="text-sm font-mono text-accent-foreground mb-2">
+          <p className="text-sm font-mono text-cyan mb-2">
             {"// contact"}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
@@ -45,10 +45,10 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="rounded-2xl border border-border bg-card/50 overflow-hidden"
+            className="rounded-2xl glass overflow-hidden"
           >
             {/* Terminal header */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-card/80">
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-muted/50">
               <div className="flex gap-1.5">
                 <span className="w-3 h-3 rounded-full bg-red-500/80" />
                 <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
@@ -62,45 +62,45 @@ export default function Contact() {
             {/* Terminal body */}
             <div className="p-6 font-mono text-sm space-y-4">
               <div>
-                <span className="text-accent-foreground">$</span>{" "}
+                <span className="text-cyan">$</span>{" "}
                 <span className="text-muted-foreground">cat</span> info.json
               </div>
               <div className="pl-4 space-y-3">
                 <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-accent-foreground flex-shrink-0" />
+                  <Mail className="w-4 h-4 text-cyan flex-shrink-0" />
                   <span className="text-muted-foreground">
                     icellilercihan@gmail.com
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-accent-foreground flex-shrink-0" />
+                  <MapPin className="w-4 h-4 text-cyan flex-shrink-0" />
                   <span className="text-muted-foreground">
                     Kocaeli, Turkey
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Terminal className="w-4 h-4 text-accent-foreground flex-shrink-0" />
+                  <Terminal className="w-4 h-4 text-cyan flex-shrink-0" />
                   <span className="text-muted-foreground">
-                    Open to remote & hybrid
+                    Open to remote &amp; hybrid
                   </span>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-border">
-                <span className="text-accent-foreground">$</span>{" "}
+                <span className="text-cyan">$</span>{" "}
                 <span className="text-muted-foreground">echo</span>{" "}
                 &quot;Available for:&quot;
               </div>
               <div className="pl-4 space-y-1 text-muted-foreground">
                 <p>→ Contract / Freelance</p>
                 <p>→ Part-time Engineering Roles</p>
-                <p>→ AI Consulting & Architecture</p>
+                <p>→ AI Consulting &amp; Architecture</p>
                 <p>→ Open Source Collaboration</p>
               </div>
 
               <div className="flex items-center">
-                <span className="text-accent-foreground">$</span>
-                <span className="ml-1 w-2 h-4 bg-accent-foreground animate-blink" />
+                <span className="text-cyan">$</span>
+                <span className="ml-1 w-2 h-4 bg-cyan animate-blink" />
               </div>
             </div>
           </motion.div>
@@ -111,7 +111,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl border border-border bg-card/50 p-6 md:p-8"
+            className="rounded-2xl glass p-6 md:p-8"
           >
             <form
               onSubmit={handleSubmit}
@@ -129,7 +129,7 @@ export default function Contact() {
                   id="name"
                   name="name"
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent-foreground/30 focus:border-accent-foreground/50 transition-all text-sm"
+                  className="w-full px-4 py-3 rounded-lg bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-cyan/30 focus:border-cyan/50 transition-all text-sm"
                   placeholder="Your name"
                 />
               </div>
@@ -145,7 +145,7 @@ export default function Contact() {
                   id="email"
                   name="email"
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent-foreground/30 focus:border-accent-foreground/50 transition-all text-sm"
+                  className="w-full px-4 py-3 rounded-lg bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-cyan/30 focus:border-cyan/50 transition-all text-sm"
                   placeholder="your@email.com"
                 />
               </div>
@@ -161,7 +161,7 @@ export default function Contact() {
                   name="message"
                   required
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent-foreground/30 focus:border-accent-foreground/50 transition-all text-sm resize-none"
+                  className="w-full px-4 py-3 rounded-lg bg-muted/50 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-cyan/30 focus:border-cyan/50 transition-all text-sm resize-none"
                   placeholder="Tell me about your project..."
                 />
               </div>
