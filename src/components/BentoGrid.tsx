@@ -65,6 +65,25 @@ export default function BentoGrid() {
               pipelines, and real-time streaming. Enables intelligent document
               understanding at scale with multi-agent workflows.
             </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+              {[
+                { label: "Architecture", value: "Multi-Agent" },
+                { label: "Core", value: "RAG + Streaming" },
+                { label: "Deployment", value: "FastAPI + Supabase" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-xl border border-border bg-muted/30 px-3 py-3"
+                >
+                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground/80">
+                    {item.label}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-foreground">
+                    {item.value}
+                  </p>
+                </div>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-2">
               {["LangGraph", "RAG", "FastAPI", "React", "Supabase", "LLM Agents"].map(
                 (tag) => (
@@ -76,6 +95,17 @@ export default function BentoGrid() {
                   </span>
                 )
               )}
+            </div>
+            <div className="mt-6 pt-6 border-t border-border/70 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-xs text-muted-foreground">
+                Focus: autonomous document intelligence with production-ready APIs.
+              </p>
+              <a
+                href="#contact"
+                className="text-xs font-medium text-cyan hover:text-cyan-foreground transition-colors"
+              >
+                Discuss implementation -&gt;
+              </a>
             </div>
           </motion.div>
 
