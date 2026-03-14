@@ -1,0 +1,19 @@
+<svg width="220" height="72" viewBox="0 0 220 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="yk-bg" x1="0" y1="0" x2="220" y2="72" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A1E46"/>
+      <stop offset="1" stop-color="#0B1530"/>
+    </linearGradient>
+    <linearGradient id="yk-accent" x1="20" y1="20" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9DD6FF"/>
+      <stop offset="1" stop-color="#5FB5FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="220" height="72" rx="12" fill="url(#yk-bg)"/>
+  <rect x="1" y="1" width="218" height="70" rx="11" stroke="#2E4B86"/>
+  <rect x="20" y="20" width="32" height="32" rx="10" fill="#142D61"/>
+  <path d="M25 28L36 39L47 28" stroke="url(#yk-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M25 44L36 33L47 44" stroke="url(#yk-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="62" y="32" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="12" font-weight="700">Yapi Kredi</text>
+  <text x="62" y="48" fill="#BFD4FF" font-family="Inter, sans-serif" font-size="11" font-weight="500">Technology</text>
+</svg>

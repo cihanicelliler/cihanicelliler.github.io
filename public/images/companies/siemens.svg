@@ -1,0 +1,7 @@
+<svg width="220" height="72" viewBox="0 0 220 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="220" height="72" rx="12" fill="#062028"/>
+  <rect x="1" y="1" width="218" height="70" rx="11" stroke="#0A556A"/>
+  <rect x="22" y="22" width="28" height="28" rx="14" fill="#00E3BE" fill-opacity="0.18"/>
+  <text x="29" y="41" fill="#00E3BE" font-family="Inter, sans-serif" font-size="11" font-weight="800">S</text>
+  <text x="60" y="43" fill="#00E3BE" font-family="Inter, sans-serif" font-size="24" font-weight="700" letter-spacing="0.8">SIEMENS</text>
+</svg>
