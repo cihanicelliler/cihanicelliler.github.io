@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Calendar, Tag, ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 interface MediumPost {
   title: string;
@@ -91,13 +92,16 @@ export default function BlogPosts() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-80 rounded-2xl glass animate-pulse flex flex-col p-6"
+                className="h-[400px] rounded-2xl glass animate-pulse flex flex-col overflow-hidden"
               >
-                <div className="w-12 h-12 rounded-xl bg-muted/50 mb-6" />
-                <div className="h-6 w-3/4 bg-muted/50 rounded-md mb-4" />
-                <div className="h-4 w-full bg-muted/50 rounded-md mb-2" />
-                <div className="h-4 w-5/6 bg-muted/50 rounded-md mb-6" />
-                <div className="mt-auto h-4 w-1/3 bg-muted/50 rounded-md" />
+                <div className="h-48 w-full bg-muted/30" />
+                <div className="p-6 flex flex-col gap-4">
+                  <div className="h-4 w-1/4 bg-muted/30 rounded-md" />
+                  <div className="h-6 w-3/4 bg-muted/30 rounded-md" />
+                  <div className="h-4 w-full bg-muted/30 rounded-md" />
+                  <div className="h-4 w-5/6 bg-muted/30 rounded-md" />
+                  <div className="mt-auto h-4 w-1/3 bg-muted/30 rounded-md" />
+                </div>
               </div>
             ))}
           </div>
@@ -126,47 +130,61 @@ export default function BlogPosts() {
                 viewport={{ once: true }}
                 variants={cardVariants}
                 whileHover={{ y: -4, scale: 1.01 }}
-                className="group flex flex-col p-6 rounded-2xl glass glass-hover transition-all duration-300"
+                className="group flex flex-col rounded-2xl glass glass-hover transition-all duration-300 overflow-hidden"
               >
-                <div className="flex items-center gap-2 mb-4">
-                  <Calendar className="w-4 h-4 text-cyan/70" />
-                  <span className="text-xs font-mono text-muted-foreground">
-                    {formatDate(post.pubDate)}
-                  </span>
+                {/* Thumbnail */}
+                <div className="relative h-48 w-full overflow-hidden bg-muted/20">
+                  <Image
+                    src={post.thumbnail || "/images/banner.png"}
+                    alt={post.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent opacity-60" />
                 </div>
 
-                <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-cyan transition-colors">
-                  <a href={post.link} target="_blank" rel="noopener noreferrer">
-                    {post.title}
-                  </a>
-                </h3>
-
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-3">
-                  {stripHtml(post.description)}
-                </p>
-
-                <div className="mt-auto">
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {post.categories.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan/5 text-cyan/70 border border-cyan/10"
-                      >
-                        <Tag className="w-3 h-3" />
-                        {tag}
-                      </span>
-                    ))}
+                <div className="flex flex-col p-6 flex-1">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Calendar className="w-4 h-4 text-cyan/70" />
+                    <span className="text-xs font-mono text-muted-foreground">
+                      {formatDate(post.pubDate)}
+                    </span>
                   </div>
 
-                  <a
-                    href={post.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-cyan transition-colors"
-                  >
-                    Read on Medium
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </a>
+                  <h3 className="text-xl font-bold mb-3 line-clamp-2 group-hover:text-cyan transition-colors">
+                    <a href={post.link} target="_blank" rel="noopener noreferrer">
+                      {post.title}
+                    </a>
+                  </h3>
+
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-3">
+                    {stripHtml(post.description)}
+                  </p>
+
+                  <div className="mt-auto">
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {post.categories.slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan/5 text-cyan/70 border border-cyan/10"
+                        >
+                          <Tag className="w-3 h-3" />
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <a
+                      href={post.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-cyan transition-colors"
+                    >
+                      Read on Medium
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
                 </div>
               </motion.div>
             ))}
