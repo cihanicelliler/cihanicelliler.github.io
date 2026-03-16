@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import BentoGrid from "@/components/BentoGrid";
+import BlogPosts from "@/components/BlogPosts";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
 import TechMarquee from "@/components/TechMarquee";
 import Contact from "@/components/Contact";
@@ -13,6 +14,7 @@ export default function Home() {
       <main>
         <Hero />
         <BentoGrid />
+        <BlogPosts />
         <ExperienceTimeline />
         <TechMarquee />
         <Contact />
