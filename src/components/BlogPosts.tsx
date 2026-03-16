@@ -64,6 +64,11 @@ export default function BlogPosts() {
     });
   };
 
+  const extractThumbnail = (description: string) => {
+    const match = description.match(/<img[^>]+src="([^">]+)"/);
+    return match ? match[1] : null;
+  };
+
   const stripHtml = (html: string) => {
     // Basic HTML tag removal for description snippet
     return html.replace(/<[^>]*>?/gm, "").substring(0, 160) + "...";
@@ -121,28 +126,31 @@ export default function BlogPosts() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post, i) => (
-              <motion.div
-                key={post.guid}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={cardVariants}
-                whileHover={{ y: -4, scale: 1.01 }}
-                className="group flex flex-col rounded-2xl glass glass-hover transition-all duration-300 overflow-hidden"
-              >
-                {/* Thumbnail */}
-                <div className="relative h-48 w-full overflow-hidden bg-muted/20">
-                  <Image
-                    src={post.thumbnail || "/images/banner.png"}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent opacity-60" />
-                </div>
+            {posts.map((post, i) => {
+              const thumbnail = post.thumbnail || extractThumbnail(post.description) || "/images/banner.png";
+              
+              return (
+                <motion.div
+                  key={post.guid}
+                  custom={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={cardVariants}
+                  whileHover={{ y: -4, scale: 1.01 }}
+                  className="group flex flex-col rounded-2xl glass glass-hover transition-all duration-300 overflow-hidden"
+                >
+                  {/* Thumbnail */}
+                  <div className="relative h-48 w-full overflow-hidden bg-muted/20">
+                    <Image
+                      src={thumbnail}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent opacity-60" />
+                  </div>
 
                 <div className="flex flex-col p-6 flex-1">
                   <div className="flex items-center gap-2 mb-4">
@@ -183,14 +191,14 @@ export default function BlogPosts() {
                     >
                       Read on Medium
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
+                      </a>
+                      </div>
+                      </div>
+                      </motion.div>
+                      );
+                      })}
+                      </div>
+                      )}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
