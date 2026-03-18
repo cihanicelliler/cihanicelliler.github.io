@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Premium earth globe favicon">
+  <title>Premium earth globe favicon</title>
+  <defs>
+    <linearGradient id="oceanPremium" x1="14" y1="10" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#99dbff"/>
+      <stop offset="0.48" stop-color="#2f7ad8"/>
+      <stop offset="1" stop-color="#132f6b"/>
+    </linearGradient>
+    <linearGradient id="landPremiumA" x1="16" y1="18" x2="34" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#baf5c8"/>
+      <stop offset="1" stop-color="#3ca879"/>
+    </linearGradient>
+    <linearGradient id="landPremiumB" x1="34" y1="22" x2="52" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a8e9d7"/>
+      <stop offset="1" stop-color="#2b8b6f"/>
+    </linearGradient>
+    <clipPath id="globeClipPremium">
+      <circle cx="32" cy="32" r="25"/>
+    </clipPath>
+  </defs>
+
+  <circle cx="32" cy="32" r="30" fill="#050d1f"/>
+  <circle cx="32" cy="32" r="28.4" fill="#0b1c3e"/>
+  <circle cx="32" cy="32" r="26.8" fill="#12356f"/>
+  <circle cx="32" cy="32" r="25" fill="url(#oceanPremium)"/>
+
+  <g clip-path="url(#globeClipPremium)">
+    <path fill="url(#landPremiumA)" d="M15 21c2-2 5-4 9-4l6 2 4 5-1 5-5 3-2 5-6 1-5-3-1-5 2-5z"/>
+    <path fill="#4db786" d="M17 37l5-2 6 2 2 5-3 5-7 1-5-4z"/>
+    <path fill="url(#landPremiumB)" d="M34 20l8-3 8 3 2 5-3 5-6 2-3 4-5-1-2-5z"/>
+    <path fill="#2f946f" d="M36 36l6-2 8 3 1 6-7 5-7-2-2-5z"/>
+    <path fill="#87dcc5" opacity="0.95" d="M42 28l4-1 2 2-1 3-4 1-2-2z"/>
+
+    <g fill="none" stroke="#eef8ff" stroke-linecap="round" opacity="0.3">
+      <path d="M7 32h50" stroke-width="1.1"/>
+      <path d="M9 24c8 3 15 4 23 4s15-1 23-4" stroke-width="1"/>
+      <path d="M9 40c8-3 15-4 23-4s15 1 23 4" stroke-width="1"/>
+      <path d="M32 7c5 6 8 15 8 25s-3 19-8 25" stroke-width="0.9"/>
+      <path d="M32 7c-5 6-8 15-8 25s3 19 8 25" stroke-width="0.9"/>
+    </g>
+  </g>
+
+  <circle cx="24" cy="23" r="8" fill="#ffffff" opacity="0.08"/>
+  <circle cx="32" cy="32" r="25" fill="none" stroke="#d8ecff" stroke-opacity="0.62" stroke-width="0.9"/>
+  <circle cx="32" cy="32" r="27.2" fill="none" stroke="#f2d48a" stroke-opacity="0.68" stroke-width="1.2"/>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#020816" stroke-width="2"/>
+</svg>

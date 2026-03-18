@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Globe favicon with CI initials">
+  <title>Globe favicon with CI initials</title>
+  <defs>
+    <linearGradient id="oceanGold" x1="14" y1="10" x2="50" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff3c4"/>
+      <stop offset=".5" stop-color="#e8be59"/>
+      <stop offset="1" stop-color="#b07a22"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer ring for dark browser tabs -->
+  <circle cx="32" cy="32" r="30" fill="#3f280a"/>
+  <circle cx="32" cy="32" r="28" fill="url(#oceanGold)"/>
+
+  <!-- Subtle land masses to preserve earth identity -->
+  <path fill="#f6dd97" d="M17 29c4-7 12-12 21-11 4 1 7 2 10 5l-4 5-8 2-4 5-8-1-4-5z"/>
+  <path fill="#d49a38" d="M19 37l7-3 5 2 4 6-2 6-9-2-5-9z"/>
+  <path fill="#c7892d" d="M37 36l8-3 7 4-3 8-10 3-5-4 3-8z"/>
+
+  <!-- Globe grid lines -->
+  <path d="M10 32h44M32 10c6 6 10 14 10 22s-4 16-10 22M32 10c-6 6-10 14-10 22s4 16 10 22M13 24c6 3 12 4 19 4s13-1 19-4M13 40c6-3 12-4 19-4s13 1 19 4" fill="none" stroke="#5f3d0f" stroke-width="2" stroke-linecap="round" opacity=".45"/>
+
+  <!-- Initials: CI (bold, simple, readable at favicon sizes) -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <!-- soft halo for contrast over continents and grid -->
+    <path d="M30 23c-5 0-9 4-9 9s4 9 9 9" stroke="#fff6d3" stroke-width="8" opacity=".95"/>
+    <path d="M36 23v18" stroke="#fff6d3" stroke-width="8" opacity=".95"/>
+
+    <!-- primary initials -->
+    <path d="M30 23c-5 0-9 4-9 9s4 9 9 9" stroke="#3f280a" stroke-width="4"/>
+    <path d="M36 23v18" stroke="#3f280a" stroke-width="4"/>
+  </g>
+
+  <circle cx="32" cy="32" r="28" fill="none" stroke="#fff6d3" stroke-width="1.5"/>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#3f280a" stroke-width="2"/>
+</svg>

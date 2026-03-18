@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, BookOpen } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -41,6 +41,15 @@ export default function Footer() {
               aria-label="Email"
             >
               <Mail className="w-4 h-4" />
+            </a>
+            <a
+              href="https://medium.com/@cihanicelliler"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-cyan/30 transition-all"
+              aria-label="Medium"
+            >
+              <BookOpen className="w-4 h-4" />
             </a>
           </div>
         </div>

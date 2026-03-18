@@ -7,6 +7,7 @@ import {
   Github,
   Linkedin,
   Mail,
+  BookOpen,
   MapPin,
   Zap,
   ExternalLink,
@@ -46,6 +47,11 @@ const socialLinks = [
     icon: Mail,
     href: "mailto:icellilercihan@gmail.com",
     label: "Email",
+  },
+  {
+    icon: BookOpen,
+    href: "https://medium.com/@cihanicelliler",
+    label: "Medium",
   },
 ];
 

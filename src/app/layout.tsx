@@ -68,6 +68,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteUrl,
   },
+  icons: {
+    icon: [{ url: "/favicon-earth-premium.svg", type: "image/svg+xml", sizes: "any" }],
+    shortcut: [{ url: "/favicon-earth-premium.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/favicon-earth-premium.svg", type: "image/svg+xml", sizes: "any" }],
+  },
 };
 
 const personJsonLd = {
