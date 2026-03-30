@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Brain } from "lucide-react";
 
@@ -15,6 +15,7 @@ const navLinks = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("#home");
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -22,44 +23,98 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Active section tracking
+  useEffect(() => {
+    const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        }
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
+    );
+
+    for (const id of sectionIds) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleMobileClick = useCallback(
+    (href: string) => {
+      setMobileOpen(false);
+      setActiveSection(href);
+    },
+    []
+  );
+
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border"
-          : "bg-transparent"
-      }`}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
+      className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4"
     >
-      <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="#home" className="flex items-center gap-2 group">
-          <Brain className="w-6 h-6 text-cyan group-hover:text-accent transition-colors" />
-          <span className="font-mono text-lg font-semibold tracking-tight">
-            cihan<span className="text-cyan">.dev</span>
+      {/* Floating pill nav */}
+      <nav
+        className={`relative flex items-center gap-1 px-2 py-2 rounded-2xl transition-all duration-500 ${
+          scrolled
+            ? "bg-background/70 backdrop-blur-2xl border border-border/60 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+            : "bg-background/30 backdrop-blur-md border border-transparent"
+        }`}
+      >
+        {/* Logo */}
+        <a
+          href="#home"
+          className="flex items-center gap-2 px-3 py-2 rounded-xl group mr-2"
+        >
+          <div className="relative">
+            <Brain className="w-5 h-5 text-cyan group-hover:text-violet transition-colors duration-300" />
+            <div className="absolute inset-0 w-5 h-5 bg-cyan/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <span className="font-mono text-sm font-semibold tracking-tight hidden sm:inline">
+            cihan<span className="gradient-text">.dev</span>
           </span>
         </a>
 
-        {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-8">
+        {/* Desktop nav links */}
+        <ul className="hidden md:flex items-center gap-0.5">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors relative group"
+                className={`relative px-3.5 py-2 text-sm rounded-xl transition-all duration-300 ${
+                  activeSection === link.href
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-cyan group-hover:w-full transition-all duration-300" />
+                {/* Active indicator background */}
+                {activeSection === link.href && (
+                  <motion.span
+                    layoutId="activeSection"
+                    className="absolute inset-0 bg-white/[0.06] rounded-xl border border-white/[0.08]"
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{link.label}</span>
               </a>
             </li>
           ))}
-          <li>
+          <li className="ml-2">
             <a
               href="#contact"
-              className="text-sm px-4 py-2 rounded-lg bg-accent text-white hover:bg-accent/80 transition-colors"
+              className="relative text-sm px-5 py-2 rounded-xl font-medium overflow-hidden group"
             >
-              Get in Touch
+              <span className="absolute inset-0 bg-gradient-to-r from-cyan via-violet to-pink opacity-90 group-hover:opacity-100 transition-opacity" />
+              <span className="relative z-10 text-white">
+                Get in Touch
+              </span>
             </a>
           </li>
         </ul>
@@ -68,46 +123,66 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-foreground"
+          className="md:hidden ml-2 p-2 rounded-xl text-foreground hover:bg-white/5 transition-colors"
           aria-label="Toggle menu"
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
         >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileOpen ? (
+            <X className="w-5 h-5" />
+          ) : (
+            <Menu className="w-5 h-5" />
+          )}
         </button>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — full screen overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             id="mobile-menu"
-            className="md:hidden bg-background/95 backdrop-blur-md border-b border-border overflow-hidden"
+            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-2xl flex items-center justify-center"
           >
-            <ul className="flex flex-col items-center gap-6 py-8">
-              {navLinks.map((link) => (
-                <li key={link.href}>
+            <ul className="flex flex-col items-center gap-6">
+              {navLinks.map((link, i) => (
+                <motion.li
+                  key={link.href}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
+                >
                   <a
                     href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="text-lg text-muted-foreground hover:text-foreground transition-colors"
+                    onClick={() => handleMobileClick(link.href)}
+                    className={`text-2xl font-heading font-bold tracking-tight transition-colors ${
+                      activeSection === link.href
+                        ? "gradient-text"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
                   >
                     {link.label}
                   </a>
-                </li>
+                </motion.li>
               ))}
-              <li>
+              <motion.li
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: 0.35 }}
+              >
                 <a
                   href="#contact"
-                  onClick={() => setMobileOpen(false)}
-                  className="text-lg px-6 py-2 rounded-lg bg-accent text-white hover:bg-accent/80 transition-colors"
+                  onClick={() => handleMobileClick("#contact")}
+                  className="relative px-8 py-3 rounded-xl text-lg font-medium overflow-hidden group"
                 >
-                  Get in Touch
+                  <span className="absolute inset-0 bg-gradient-to-r from-cyan via-violet to-pink" />
+                  <span className="relative z-10 text-white">Get in Touch</span>
                 </a>
-              </li>
+              </motion.li>
             </ul>
           </motion.div>
         )}

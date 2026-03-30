@@ -1,11 +1,24 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import CursorGlow from "@/components/CursorGlow";
 
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
   display: "swap",
+  variable: "--font-inter",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-heading",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-jetbrains",
 });
 
 const siteUrl = "https://cihanicelliler.github.io";
@@ -102,25 +115,63 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark ${inter.className}`}>
+    <html lang="en" className={`dark ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.className}`}>
       <head>
-        <meta name="theme-color" content="#0f172a" />
+        <meta name="theme-color" content="#050816" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
       <body className="antialiased bg-background text-foreground">
-        {/* Static ambient gradient — two-color depth effect */}
+        {/* Aurora ambient — animated floating gradient blobs */}
         <div
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 select-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 50% at 50% -5%, rgba(6,182,212,0.09) 0%, transparent 65%), radial-gradient(ellipse 55% 45% at 95% 105%, rgba(79,70,229,0.08) 0%, transparent 55%)",
-            zIndex: 0,
-          }}
-        />
+          className="pointer-events-none fixed inset-0 select-none overflow-hidden"
+          style={{ zIndex: 0 }}
+        >
+          {/* Cyan aurora blob */}
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: "50vw",
+              height: "50vw",
+              top: "-15%",
+              left: "-10%",
+              background: "radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%)",
+              filter: "blur(60px)",
+              animation: "aurora 20s ease-in-out infinite",
+            }}
+          />
+          {/* Violet aurora blob */}
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: "45vw",
+              height: "45vw",
+              bottom: "-10%",
+              right: "-5%",
+              background: "radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%)",
+              filter: "blur(60px)",
+              animation: "aurora-reverse 25s ease-in-out infinite",
+            }}
+          />
+          {/* Pink aurora blob */}
+          <div
+            className="absolute rounded-full"
+            style={{
+              width: "35vw",
+              height: "35vw",
+              top: "40%",
+              left: "50%",
+              transform: "translateX(-50%)",
+              background: "radial-gradient(circle, rgba(244,114,182,0.04) 0%, transparent 70%)",
+              filter: "blur(80px)",
+              animation: "aurora 30s ease-in-out infinite",
+              animationDelay: "-10s",
+            }}
+          />
+        </div>
         {/* Interactive cursor glow */}
         <CursorGlow />
         {children}

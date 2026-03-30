@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Server, Brain, Cloud, Layers } from "lucide-react";
 
 const techCategories = [
@@ -65,14 +66,47 @@ const stats = [
 
 const allTech = techCategories.flatMap((cat) => cat.items);
 
-function TechBadge({ name, color }: { name: string; color: string }) {
+/* ─── Badge with tooltip-style hover ─── */
+function TechBadge({
+  name,
+  color,
+  category,
+}: {
+  name: string;
+  color: string;
+  category?: string;
+}) {
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <div className="group/badge flex items-center gap-2 px-5 py-2.5 rounded-full glass transition-all duration-300 whitespace-nowrap select-none hover:border-cyan/30 hover:shadow-[0_0_16px_rgba(6,182,212,0.12)]">
+    <div
+      className="group/badge relative flex items-center gap-2.5 px-5 py-2.5 rounded-full glass whitespace-nowrap select-none transition-all duration-300 hover:border-cyan/30 hover:shadow-[0_0_20px_rgba(6,182,212,0.1)]"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <span
-        className="w-2.5 h-2.5 rounded-full shrink-0 transition-shadow duration-300 group-hover/badge:shadow-[0_0_8px]"
-        style={{ backgroundColor: color }}
+        className="w-2.5 h-2.5 rounded-full shrink-0 transition-all duration-300"
+        style={{
+          backgroundColor: color,
+          boxShadow: hovered ? `0 0 10px ${color}80` : "none",
+        }}
       />
       <span className="text-sm font-medium text-foreground">{name}</span>
+
+      {/* Tooltip */}
+      <AnimatePresence>
+        {hovered && category && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-lg bg-surface border border-border text-[10px] font-mono text-muted-foreground whitespace-nowrap pointer-events-none z-20"
+          >
+            {category}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -89,9 +123,12 @@ export default function TechMarquee() {
           transition={{ duration: 0.5 }}
           className="mb-10"
         >
-          <p className="text-sm font-mono text-cyan mb-2">{"// tech stack"}</p>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Tools &amp; Technologies
+          <p className="text-sm font-mono text-cyan mb-2 flex items-center gap-2">
+            <span className="inline-block w-8 h-px bg-gradient-to-r from-cyan to-transparent" />
+            {"// tech stack"}
+          </p>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold tracking-tight">
+            Tools &amp; <span className="gradient-text">Technologies</span>
           </h2>
         </motion.div>
 
@@ -110,9 +147,11 @@ export default function TechMarquee() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.1 + i * 0.07 }}
-              className="rounded-2xl glass p-5 text-center"
+              className="rounded-2xl glass p-5 text-center group hover:border-cyan/20 transition-all duration-300"
             >
-              <p className="text-2xl md:text-3xl font-extrabold text-cyan">{stat.value}</p>
+              <p className="text-2xl md:text-3xl font-heading font-extrabold text-cyan group-hover:scale-110 transition-transform duration-300 inline-block">
+                {stat.value}
+              </p>
               <p className="text-xs text-muted-foreground mt-1 tracking-wide">{stat.label}</p>
             </motion.div>
           ))}
@@ -133,7 +172,7 @@ export default function TechMarquee() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
-              className="rounded-2xl glass p-5"
+              className="rounded-2xl glass glass-hover p-5 transition-all duration-300"
             >
               <div className="flex items-center gap-2 mb-4">
                 <div
@@ -142,7 +181,7 @@ export default function TechMarquee() {
                 >
                   <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
                 </div>
-                <span className="font-semibold text-sm">{cat.category}</span>
+                <span className="font-heading font-semibold text-sm">{cat.category}</span>
                 <span className="ml-auto text-xs font-mono text-muted-foreground/60">
                   {cat.items.length}
                 </span>
@@ -151,7 +190,7 @@ export default function TechMarquee() {
                 {cat.items.map((item) => (
                   <span
                     key={item.name}
-                    className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full bg-muted/50 text-muted-foreground"
+                    className="inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-lg bg-white/[0.03] border border-border/50 text-muted-foreground hover:text-foreground hover:border-white/20 transition-all duration-300"
                   >
                     <span
                       className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -171,9 +210,12 @@ export default function TechMarquee() {
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-linear-to-r from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-linear-to-l from-background to-transparent z-10 pointer-events-none" />
         <div className="flex animate-marquee w-max gap-4">
-          {[...allTech, ...allTech].map((tech, i) => (
-            <TechBadge key={`r1-${tech.name}-${i}`} name={tech.name} color={tech.color} />
-          ))}
+          {[...allTech, ...allTech].map((tech, i) => {
+            const category = techCategories.find((c) => c.items.some((t) => t.name === tech.name))?.category;
+            return (
+              <TechBadge key={`r1-${tech.name}-${i}`} name={tech.name} color={tech.color} category={category} />
+            );
+          })}
         </div>
       </div>
 
@@ -185,12 +227,14 @@ export default function TechMarquee() {
           className="flex animate-marquee w-max gap-4"
           style={{ animationDirection: "reverse", animationDuration: "35s" }}
         >
-          {[...allTech.slice().reverse(), ...allTech.slice().reverse()].map((tech, i) => (
-            <TechBadge key={`r2-${tech.name}-${i}`} name={tech.name} color={tech.color} />
-          ))}
+          {[...allTech.slice().reverse(), ...allTech.slice().reverse()].map((tech, i) => {
+            const category = techCategories.find((c) => c.items.some((t) => t.name === tech.name))?.category;
+            return (
+              <TechBadge key={`r2-${tech.name}-${i}`} name={tech.name} color={tech.color} category={category} />
+            );
+          })}
         </div>
       </div>
-
     </section>
   );
 }
