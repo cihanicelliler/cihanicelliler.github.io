@@ -109,10 +109,10 @@ export default function Header() {
           <li className="ml-2">
             <a
               href="#contact"
-              className="relative text-sm px-5 py-2 rounded-xl font-medium overflow-hidden group"
+              className="relative text-sm px-5 py-2 rounded-xl font-medium overflow-hidden group bg-white/[0.04] border border-cyan/30 hover:border-cyan/60 hover:bg-white/[0.07] hover:shadow-[0_0_20px_rgba(0,212,255,0.15)] transition-all duration-300"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-cyan via-violet to-pink opacity-90 group-hover:opacity-100 transition-opacity" />
-              <span className="relative z-10 text-white">
+              <span className="absolute inset-0 bg-gradient-to-r from-cyan/5 to-violet/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="relative z-10 text-cyan group-hover:text-white transition-colors duration-300">
                 Get in Touch
               </span>
             </a>
@@ -177,10 +177,9 @@ export default function Header() {
                 <a
                   href="#contact"
                   onClick={() => handleMobileClick("#contact")}
-                  className="relative px-8 py-3 rounded-xl text-lg font-medium overflow-hidden group"
+                  className="relative px-8 py-3 rounded-xl text-lg font-medium overflow-hidden group bg-white/[0.04] border border-cyan/30 hover:border-cyan/60 hover:shadow-[0_0_24px_rgba(0,212,255,0.15)] transition-all duration-300"
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-cyan via-violet to-pink" />
-                  <span className="relative z-10 text-white">Get in Touch</span>
+                  <span className="relative z-10 text-cyan">Get in Touch</span>
                 </a>
               </motion.li>
             </ul>

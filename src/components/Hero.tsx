@@ -344,18 +344,24 @@ export default function Hero() {
                 href="#projects"
                 className="relative px-7 py-3 rounded-xl font-medium overflow-hidden group"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan via-violet to-pink opacity-90 group-hover:opacity-100 transition-opacity" />
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan via-violet to-pink opacity-0 group-hover:opacity-40 blur-xl transition-opacity" />
+                <span className="absolute inset-0 bg-gradient-to-r from-cyan to-violet opacity-90 group-hover:opacity-100 transition-opacity" />
+                <span className="absolute inset-0 bg-gradient-to-r from-cyan to-violet opacity-0 group-hover:opacity-50 blur-xl transition-opacity" />
                 <span className="relative z-10 text-white flex items-center gap-2">
                   View Projects
+                  <ArrowDown className="w-4 h-4 rotate-[-90deg] group-hover:translate-x-0.5 transition-transform" />
                 </span>
               </a>
               {/* Secondary CTA */}
               <a
                 href="#contact"
-                className="px-7 py-3 rounded-xl border border-border/80 text-foreground font-medium hover:bg-white/[0.03] hover:border-white/20 transition-all duration-300"
+                className="group relative px-7 py-3 rounded-xl font-medium glass border-cyan/20 hover:border-cyan/50 text-foreground hover:text-cyan transition-all duration-300 overflow-hidden"
               >
-                Get in Touch
+                <span className="absolute inset-0 bg-cyan/[0.04] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="absolute inset-0 bg-gradient-to-r from-cyan/0 via-cyan/5 to-cyan/0 opacity-0 group-hover:opacity-100 blur-lg transition-opacity" />
+                <span className="relative z-10 flex items-center gap-2">
+                  Get in Touch
+                  <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                </span>
               </a>
 
               {/* Social icons */}

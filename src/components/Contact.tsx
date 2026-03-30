@@ -243,16 +243,18 @@ export default function Contact() {
               </div>
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-medium text-white transition-all duration-300 relative overflow-hidden group"
-                style={{
-                  background: submitted
-                    ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
-                    : "linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%)",
-                }}
+                className={`w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl font-medium text-sm tracking-wide transition-all duration-500 relative overflow-hidden group ${
+                  submitted
+                    ? "bg-emerald-500/10 border border-emerald-500/40 text-emerald-400"
+                    : "glass border-cyan/25 text-foreground hover:border-cyan/50 hover:text-cyan hover:shadow-[0_0_30px_rgba(0,212,255,0.12)]"
+                }`}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                {/* Shimmer sweep */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan/[0.06] to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                {/* Subtle top light line */}
+                <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 {submitted ? (
                   <>
                     <Sparkles className="w-4 h-4" />
@@ -260,7 +262,7 @@ export default function Contact() {
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" />
+                    <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
                     Send Message
                   </>
                 )}
