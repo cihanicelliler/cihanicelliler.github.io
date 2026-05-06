@@ -1,37 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
-import {
-  ArrowDown,
-  Sparkles,
-  Github,
-  Linkedin,
-  Mail,
-  BookOpen,
-  MapPin,
-  Zap,
-  ExternalLink,
-  Globe,
-} from "lucide-react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import ParticleField from "./ParticleField";
+import { Github, Linkedin, Mail, BookOpen, MapPin } from "lucide-react";
 
 const stats = [
-  { value: 5, suffix: "+", label: "Years Exp." },
-  { value: 3, suffix: "", label: "Banks Served" },
-  { value: 20, suffix: "+", label: "Technologies" },
-];
-
-const quickTech = [
-  "Java",
-  "LangGraph",
-  "Spring Boot",
-  "Kafka",
-  "Kubernetes",
-  "gRPC",
-  "RAG",
-  "DDD",
+  { value: "5+", label: "Years Experience" },
+  { value: "4", label: "Industries" },
+  { value: "20+", label: "Technologies" },
 ];
 
 const socialLinks = [
@@ -41,401 +17,261 @@ const socialLinks = [
   { icon: BookOpen, href: "https://medium.com/@cihanicelliler", label: "Medium" },
 ];
 
-/* ─── Animated counting number ─── */
-function CountUp({ target, suffix }: { target: number; suffix: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true });
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const duration = 1200;
-    const stepTime = 30;
-    const steps = duration / stepTime;
-    const increment = target / steps;
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, stepTime);
-    return () => clearInterval(timer);
-  }, [isInView, target]);
-
-  return (
-    <span ref={ref}>
-      {count}
-      {suffix}
-    </span>
-  );
-}
-
-/* ─── Typing text effect ─── */
-function TypingText({ text, delay = 0 }: { text: string; delay?: number }) {
-  const [displayed, setDisplayed] = useState("");
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setStarted(true), delay);
-    return () => clearTimeout(timeout);
-  }, [delay]);
-
-  useEffect(() => {
-    if (!started) return;
-    let i = 0;
-    const timer = setInterval(() => {
-      if (i <= text.length) {
-        setDisplayed(text.slice(0, i));
-        i++;
-      } else {
-        clearInterval(timer);
-      }
-    }, 40);
-    return () => clearInterval(timer);
-  }, [started, text]);
-
-  return (
-    <>
-      {displayed}
-      {displayed.length < text.length && (
-        <span className="inline-block w-0.5 h-[1em] bg-cyan animate-blink align-text-bottom ml-0.5" />
-      )}
-    </>
-  );
-}
-
-/* ─── 3D Tilt Card ─── */
-function TiltCard({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-  const springX = useSpring(rotateX, { stiffness: 200, damping: 25 });
-  const springY = useSpring(rotateY, { stiffness: 200, damping: 25 });
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    rotateX.set(-y * 12);
-    rotateY.set(x * 12);
-  };
-
-  const onMouseLeave = () => {
-    rotateX.set(0);
-    rotateY.set(0);
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      style={{ rotateX: springX, rotateY: springY, perspective: 800 }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, delay, ease: "easeOut" as const },
+});
 
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center hero-grid-bg overflow-hidden"
+      style={{ backgroundColor: "#ffffff", paddingTop: 120, paddingBottom: 80 }}
     >
-      {/* Particle constellation */}
-      <ParticleField />
+      <div style={{ maxWidth: 980, margin: "0 auto", padding: "0 22px" }}>
+        <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 lg:gap-16">
 
-      {/* Radial glow */}
-      <div className="absolute inset-0 glow-accent pointer-events-none" />
-
-      {/* Floating aurora orbs */}
-      <motion.div
-        className="absolute top-1/4 left-1/6 w-80 h-80 rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%)" }}
-        animate={{ x: [0, 40, -30, 0], y: [0, -50, 30, 0] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-1/4 right-1/6 w-96 h-96 rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%)" }}
-        animate={{ x: [0, -40, 30, 0], y: [0, 40, -40, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 w-full pt-32 pb-16">
-        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-20">
-          {/* Left — Profile Photo with 3D tilt */}
+          {/* Photo column */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
+            {...fadeUp(0)}
             className="shrink-0 flex flex-col items-center gap-4"
           >
-            <TiltCard>
-              <div className="relative">
-                {/* Animated gradient ring */}
-                <div
-                  className="absolute -inset-1.5 rounded-2xl"
-                  style={{
-                    background: "conic-gradient(from 0deg, #00d4ff, #7c3aed, #f472b6, #00d4ff)",
-                    animation: "border-rotate 4s linear infinite",
-                    opacity: 0.4,
-                    filter: "blur(4px)",
-                  }}
-                />
-                {/* Pulse ring */}
-                <div
-                  className="absolute -inset-4 rounded-3xl border border-cyan/15"
-                  style={{ animation: "pulse-ring 3s ease-in-out infinite" }}
-                />
-                {/* Photo container */}
-                <div className="relative w-56 h-56 md:w-64 md:h-64 rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl shadow-cyan/10">
-                  <Image
-                    src="/images/profile.JPG"
-                    alt="Cihan İçelliler"
-                    fill
-                    className="object-cover profile-mask"
-                    priority
-                  />
-                  {/* Inner glow overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
-                  <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10" />
-                </div>
-              </div>
-            </TiltCard>
-
-            {/* Status badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-mono"
+            <div
+              className="relative rounded-[22px] overflow-hidden product-shadow"
+              style={{ width: 240, height: 240 }}
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-              </span>
-              <span className="text-muted-foreground">Open to opportunities</span>
-            </motion.div>
+              <Image
+                src="/images/profile.png"
+                alt="Cihan İçelliler"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+
+            {/* Available badge */}
+            <div
+              className="flex items-center gap-2"
+              style={{ fontSize: 12, color: "#6e6e73", letterSpacing: "-0.12px" }}
+            >
+              <span
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: "#30d158", flexShrink: 0 }}
+              />
+              Open to opportunities
+            </div>
 
             {/* Location */}
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground/40">
-              <MapPin className="w-3 h-3" />
-              <span>Istanbul, Turkey</span>
+            <div
+              className="flex items-center gap-1.5"
+              style={{ fontSize: 12, color: "#86868b" }}
+            >
+              <MapPin size={12} />
+              Istanbul, Turkey
+            </div>
+
+            {/* Social links */}
+            <div className="flex items-center gap-3 mt-1">
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("mailto") ? undefined : "_blank"}
+                  rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                  aria-label={label}
+                  style={{
+                    color: "#6e6e73",
+                    transition: "color 200ms ease",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#0066cc"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#6e6e73"; }}
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
             </div>
           </motion.div>
 
-          {/* Right — Content */}
-          <div className="text-center lg:text-left flex-1 min-w-0">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
-            >
-              <Sparkles className="w-4 h-4 text-cyan" />
-              <span className="text-sm text-muted-foreground font-mono">
-                Senior Software Engineer &amp; AI Agent Specialist
-              </span>
-            </motion.div>
+          {/* Content column */}
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left flex-1 min-w-0 pt-2">
 
-            {/* Name — animated gradient */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-5xl sm:text-6xl md:text-7xl font-heading font-extrabold tracking-tight leading-[1.1] mb-2"
-            >
-              Cihan{" "}
-              <span className="gradient-text">
-                İçelliler
-              </span>
-            </motion.h1>
-
-            {/* Name meaning */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="inline-flex items-center gap-1.5 mb-5"
-              title="Cihan means 'world' in Persian and Turkish"
-            >
-              <Globe className="w-3.5 h-3.5 text-cyan/40" />
-              <span className="text-xs font-mono text-muted-foreground/30 tracking-widest">
-                cihan&nbsp;=&nbsp;world
-              </span>
-            </motion.div>
-
-            {/* Description with typing effect */}
+            {/* Label */}
             <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
-              className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed mb-6"
+              {...fadeUp(0.08)}
+              style={{ fontSize: 14, color: "#6e6e73", letterSpacing: "-0.224px", marginBottom: 12 }}
             >
-              Building the{" "}
-              <span className="text-cyan font-semibold">
-                <TypingText text="Self-Running Bank" delay={1200} />
-              </span>{" "}
-              — where AI agents orchestrate every process, from compliance to
-              customer experience, autonomously.
+              Senior Software Engineer &amp; AI Agent Specialist
             </motion.p>
 
-            {/* Quick tech chips */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-6"
+            {/* Headline */}
+            <motion.h1
+              {...fadeUp(0.16)}
+              style={{
+                fontSize: "clamp(40px, 5.6vw, 56px)",
+                fontWeight: 600,
+                lineHeight: 1.07,
+                letterSpacing: "-0.28px",
+                color: "#1d1d1f",
+                marginBottom: 16,
+              }}
             >
-              {quickTech.map((tech, i) => (
-                <motion.span
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.5 + i * 0.04 }}
-                  className="px-3 py-1.5 rounded-lg text-xs font-mono glass text-muted-foreground hover:text-cyan hover:border-cyan/30 transition-all duration-300 cursor-default"
-                >
-                  {tech}
-                </motion.span>
-              ))}
+              Building the<br />
+              <span style={{ color: "#0066cc" }}>Self-Running Bank.</span>
+            </motion.h1>
+
+            {/* Tagline */}
+            <motion.p
+              {...fadeUp(0.24)}
+              style={{
+                fontSize: 21,
+                fontWeight: 400,
+                lineHeight: 1.381,
+                letterSpacing: "0.011em",
+                color: "#6e6e73",
+                maxWidth: 520,
+                marginBottom: 32,
+              }}
+            >
+              AI agents that orchestrate every banking process — from compliance to customer experience — autonomously.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              {...fadeUp(0.32)}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-10"
+            >
+              <a
+                href="#projects"
+                style={{
+                  backgroundColor: "#0066cc",
+                  color: "#ffffff",
+                  borderRadius: 9999,
+                  padding: "11px 22px",
+                  fontSize: 17,
+                  fontWeight: 400,
+                  border: "none",
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  transition: "background 200ms ease, transform 150ms ease",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#0077ed"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "#0066cc"; }}
+                onMouseDown={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "scale(0.95)"; }}
+                onMouseUp={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1)"; }}
+              >
+                View Projects
+              </a>
+              <a
+                href="#contact"
+                style={{
+                  backgroundColor: "transparent",
+                  color: "#0066cc",
+                  borderRadius: 9999,
+                  padding: "10px 22px",
+                  fontSize: 17,
+                  fontWeight: 400,
+                  border: "1px solid #0066cc",
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  transition: "background 200ms ease, color 200ms ease, transform 150ms ease",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLAnchorElement;
+                  el.style.backgroundColor = "#0066cc";
+                  el.style.color = "#ffffff";
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLAnchorElement;
+                  el.style.backgroundColor = "transparent";
+                  el.style.color = "#0066cc";
+                }}
+                onMouseDown={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "scale(0.95)"; }}
+                onMouseUp={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1)"; }}
+              >
+                Get in Touch
+              </a>
             </motion.div>
 
-            {/* Stats row — animated counters */}
+            {/* Stats row */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex items-center justify-center lg:justify-start divide-x divide-border/50 mb-8"
+              {...fadeUp(0.4)}
+              className="flex items-center"
+              style={{ gap: 0, borderTop: "1px solid #e0e0e0", paddingTop: 24, width: "100%", maxWidth: 440 }}
             >
               {stats.map((stat, i) => (
                 <div
                   key={stat.label}
-                  className={`${i === 0 ? "pr-6" : "px-6"} text-center lg:text-left`}
+                  style={{
+                    flex: 1,
+                    textAlign: "center",
+                    paddingLeft: i === 0 ? 0 : 16,
+                    paddingRight: i === stats.length - 1 ? 0 : 16,
+                    borderLeft: i > 0 ? "1px solid #e0e0e0" : "none",
+                  }}
                 >
-                  <p className="text-2xl font-heading font-extrabold gradient-text leading-none">
-                    <CountUp target={stat.value} suffix={stat.suffix} />
+                  <p style={{ fontSize: 28, fontWeight: 600, lineHeight: 1, color: "#1d1d1f", letterSpacing: "-0.4px" }}>
+                    {stat.value}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p style={{ fontSize: 12, color: "#6e6e73", marginTop: 4, letterSpacing: "-0.12px" }}>
                     {stat.label}
                   </p>
                 </div>
               ))}
             </motion.div>
-
-            {/* CTAs + social */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.6 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3"
-            >
-              {/* Primary CTA */}
-              <a
-                href="#projects"
-                className="relative px-7 py-3 rounded-xl font-medium overflow-hidden group"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan to-violet opacity-90 group-hover:opacity-100 transition-opacity" />
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan to-violet opacity-0 group-hover:opacity-50 blur-xl transition-opacity" />
-                <span className="relative z-10 text-white flex items-center gap-2">
-                  View Projects
-                  <ArrowDown className="w-4 h-4 rotate-[-90deg] group-hover:translate-x-0.5 transition-transform" />
-                </span>
-              </a>
-              {/* Secondary CTA */}
-              <a
-                href="#contact"
-                className="group relative px-7 py-3 rounded-xl font-medium glass border-cyan/20 hover:border-cyan/50 text-foreground hover:text-cyan transition-all duration-300 overflow-hidden"
-              >
-                <span className="absolute inset-0 bg-cyan/[0.04] opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan/0 via-cyan/5 to-cyan/0 opacity-0 group-hover:opacity-100 blur-lg transition-opacity" />
-                <span className="relative z-10 flex items-center gap-2">
-                  Get in Touch
-                  <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                </span>
-              </a>
-
-              {/* Social icons */}
-              <div className="flex items-center gap-2 ml-1">
-                {socialLinks.map(({ icon: Icon, href, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="group relative w-10 h-10 rounded-xl glass flex items-center justify-center text-muted-foreground hover:text-cyan transition-all duration-300"
-                  >
-                    <Icon className="w-4 h-4 relative z-10" />
-                    <div className="absolute inset-0 rounded-xl bg-cyan/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </a>
-                ))}
-              </div>
-            </motion.div>
           </div>
         </div>
 
-        {/* Currently building — spotlight card */}
+        {/* Currently Building card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.8 }}
-          className="mt-16 holo-card p-6 flex flex-col sm:flex-row sm:items-center gap-4"
+          transition={{ duration: 0.6, delay: 0.52, ease: "easeOut" as const }}
+          className="mt-16 flex flex-col sm:flex-row sm:items-center gap-4"
+          style={{
+            border: "1px solid #e0e0e0",
+            borderRadius: 18,
+            padding: "20px 24px",
+            backgroundColor: "#ffffff",
+          }}
         >
           <div className="flex items-center gap-2 shrink-0">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan" />
-            </span>
-            <Zap className="w-4 h-4 text-cyan" />
-            <span className="text-xs font-mono text-muted-foreground whitespace-nowrap">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: "#0066cc", flexShrink: 0 }}
+            />
+            <span style={{ fontSize: 12, color: "#86868b", letterSpacing: "-0.12px", whiteSpace: "nowrap" }}>
               Currently building
             </span>
           </div>
-          <div className="hidden sm:block w-px h-6 bg-border/50" />
+          <div className="hidden sm:block" style={{ width: 1, height: 20, backgroundColor: "#e0e0e0" }} />
           <div className="flex-1 min-w-0">
-            <span className="font-heading font-semibold text-sm text-foreground">Lecta AI</span>
-            <span className="text-muted-foreground text-sm">
-              {" "}— AI-native banking ops platform powered by LangGraph agent
-              orchestration, RAG pipelines &amp; event-driven microservices
+            <span style={{ fontSize: 15, fontWeight: 600, color: "#1d1d1f" }}>Lecta AI</span>
+            <span style={{ fontSize: 15, color: "#6e6e73" }}>
+              {" "}— AI-native document intelligence powered by LangGraph, RAG pipelines &amp; event-driven microservices
             </span>
           </div>
           <a
             href="#projects"
-            className="shrink-0 inline-flex items-center gap-1 text-xs font-mono text-cyan hover:text-cyan-foreground transition-colors group"
+            style={{
+              flexShrink: 0,
+              fontSize: 12,
+              color: "#0066cc",
+              textDecoration: "none",
+              letterSpacing: "-0.12px",
+              transition: "opacity 200ms ease",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.7"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
           >
-            See details
-            <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-          </a>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.3 }}
-          className="mt-14 flex justify-center"
-        >
-          <a
-            href="#projects"
-            className="inline-flex flex-col items-center gap-2 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
-          >
-            <span className="text-[10px] font-mono tracking-[0.2em] uppercase">scroll</span>
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <ArrowDown className="w-4 h-4" />
-            </motion.div>
+            See details →
           </a>
         </motion.div>
       </div>

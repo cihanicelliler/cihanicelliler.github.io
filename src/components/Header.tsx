@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Brain } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -18,174 +18,163 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState("#home");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Active section tracking
   useEffect(() => {
     const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveSection(`#${entry.target.id}`);
-          }
+          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
         }
       },
       { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
     );
-
     for (const id of sectionIds) {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     }
-
     return () => observer.disconnect();
   }, []);
 
-  const handleMobileClick = useCallback(
-    (href: string) => {
-      setMobileOpen(false);
-      setActiveSection(href);
-    },
-    []
-  );
+  const handleMobileClick = useCallback((href: string) => {
+    setMobileOpen(false);
+    setActiveSection(href);
+  }, []);
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
-      className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4"
-    >
-      {/* Floating pill nav */}
-      <nav
-        className={`relative flex items-center gap-1 px-2 py-2 rounded-2xl transition-all duration-500 ${
-          scrolled
-            ? "bg-background/70 backdrop-blur-2xl border border-border/60 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-            : "bg-background/30 backdrop-blur-md border border-transparent"
-        }`}
+    <>
+      <header
+        className="fixed top-0 left-0 right-0 z-50 transition-shadow duration-300"
+        style={{
+          height: 44,
+          backgroundColor: "rgba(255,255,255,0.8)",
+          backdropFilter: "saturate(180%) blur(20px)",
+          WebkitBackdropFilter: "saturate(180%) blur(20px)",
+          borderBottom: scrolled ? "1px solid rgba(0,0,0,0.1)" : "1px solid transparent",
+        }}
       >
-        {/* Logo */}
-        <a
-          href="#home"
-          className="flex items-center gap-2 px-3 py-2 rounded-xl group mr-2"
+        <div
+          className="flex items-center justify-between h-full"
+          style={{ maxWidth: 980, margin: "0 auto", padding: "0 22px" }}
         >
-          <div className="relative">
-            <Brain className="w-5 h-5 text-cyan group-hover:text-violet transition-colors duration-300" />
-            <div className="absolute inset-0 w-5 h-5 bg-cyan/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-          <span className="font-mono text-sm font-semibold tracking-tight hidden sm:inline">
-            cihan<span className="gradient-text">.dev</span>
-          </span>
-        </a>
+          {/* Logo — text wordmark */}
+          <a
+            href="#home"
+            className="hover:opacity-70 transition-opacity duration-200"
+            style={{ fontSize: 17, fontWeight: 400, color: "#1d1d1f", letterSpacing: "-0.28px", textDecoration: "none" }}
+          >
+            Cihan İçelliler
+          </a>
 
-        {/* Desktop nav links */}
-        <ul className="hidden md:flex items-center gap-0.5">
-          {navLinks.map((link) => (
-            <li key={link.href}>
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center" style={{ gap: 28 }}>
+            {navLinks.map((link) => (
               <a
+                key={link.href}
                 href={link.href}
-                className={`relative px-3.5 py-2 text-sm rounded-xl transition-all duration-300 ${
-                  activeSection === link.href
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                style={{
+                  fontSize: 12,
+                  fontWeight: 400,
+                  letterSpacing: "-0.12px",
+                  color: activeSection === link.href ? "#1d1d1f" : "#6e6e73",
+                  textDecoration: "none",
+                  transition: "color 200ms ease",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#1d1d1f"; }}
+                onMouseLeave={(e) => { if (activeSection !== link.href) (e.currentTarget as HTMLAnchorElement).style.color = "#6e6e73"; }}
               >
-                {/* Active indicator background */}
-                {activeSection === link.href && (
-                  <motion.span
-                    layoutId="activeSection"
-                    className="absolute inset-0 bg-white/[0.06] rounded-xl border border-white/[0.08]"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10">{link.label}</span>
+                {link.label}
               </a>
-            </li>
-          ))}
-          <li className="ml-2">
+            ))}
             <a
-              href="#contact"
-              className="relative text-sm px-5 py-2 rounded-xl font-medium overflow-hidden group bg-white/[0.04] border border-cyan/30 hover:border-cyan/60 hover:bg-white/[0.07] hover:shadow-[0_0_20px_rgba(0,212,255,0.15)] transition-all duration-300"
+              href="https://github.com/cihanicelliler"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontSize: 12,
+                fontWeight: 400,
+                letterSpacing: "-0.12px",
+                color: "#6e6e73",
+                textDecoration: "none",
+                transition: "color 200ms ease",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#0066cc"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#6e6e73"; }}
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-cyan/5 to-violet/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative z-10 text-cyan group-hover:text-white transition-colors duration-300">
-                Get in Touch
-              </span>
+              GitHub
             </a>
-          </li>
-        </ul>
+          </nav>
 
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden ml-2 p-2 rounded-xl text-foreground hover:bg-white/5 transition-colors"
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-          aria-controls="mobile-menu"
-        >
-          {mobileOpen ? (
-            <X className="w-5 h-5" />
-          ) : (
-            <Menu className="w-5 h-5" />
-          )}
-        </button>
-      </nav>
+          {/* Mobile toggle */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden"
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#1d1d1f", padding: 4, display: "flex", alignItems: "center" }}
+          >
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </header>
 
-      {/* Mobile menu — full screen overlay */}
+      {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            id="mobile-menu"
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-2xl flex items-center justify-center"
+            transition={{ duration: 0.2, ease: "easeOut" as const }}
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center"
+            style={{
+              backgroundColor: "rgba(255,255,255,0.96)",
+              backdropFilter: "saturate(180%) blur(20px)",
+              WebkitBackdropFilter: "saturate(180%) blur(20px)",
+            }}
           >
-            <ul className="flex flex-col items-center gap-6">
+            <nav className="flex flex-col items-center" style={{ gap: 36 }}>
               {navLinks.map((link, i) => (
-                <motion.li
+                <motion.a
                   key={link.href}
-                  initial={{ opacity: 0, y: 30 }}
+                  href={link.href}
+                  onClick={() => handleMobileClick(link.href)}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3, delay: i * 0.06 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.3, delay: i * 0.05, ease: "easeOut" as const }}
+                  style={{
+                    fontSize: 28,
+                    fontWeight: 600,
+                    color: activeSection === link.href ? "#0066cc" : "#1d1d1f",
+                    letterSpacing: "-0.4px",
+                    textDecoration: "none",
+                  }}
                 >
-                  <a
-                    href={link.href}
-                    onClick={() => handleMobileClick(link.href)}
-                    className={`text-2xl font-heading font-bold tracking-tight transition-colors ${
-                      activeSection === link.href
-                        ? "gradient-text"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {link.label}
-                  </a>
-                </motion.li>
+                  {link.label}
+                </motion.a>
               ))}
-              <motion.li
-                initial={{ opacity: 0, y: 30 }}
+              <motion.a
+                href="https://github.com/cihanicelliler"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.3, delay: 0.35 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.3, delay: navLinks.length * 0.05, ease: "easeOut" as const }}
+                style={{ fontSize: 17, color: "#0066cc", textDecoration: "none" }}
               >
-                <a
-                  href="#contact"
-                  onClick={() => handleMobileClick("#contact")}
-                  className="relative px-8 py-3 rounded-xl text-lg font-medium overflow-hidden group bg-white/[0.04] border border-cyan/30 hover:border-cyan/60 hover:shadow-[0_0_24px_rgba(0,212,255,0.15)] transition-all duration-300"
-                >
-                  <span className="relative z-10 text-cyan">Get in Touch</span>
-                </a>
-              </motion.li>
-            </ul>
+                GitHub ↗
+              </motion.a>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </>
   );
 }
