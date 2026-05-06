@@ -1,53 +1,104 @@
 "use client";
 
-import { type FormEvent, useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Send, Terminal, Mail, MapPin, Sparkles } from "lucide-react";
+import { type FormEvent, useState } from "react";
+import { motion } from "framer-motion";
+import { Mail, MapPin, Send } from "lucide-react";
 
-/* ─── Sequential typing line ─── */
-function TypingLine({
-  prefix,
-  text,
-  delay,
+const contactInfo = [
+  { icon: Mail, label: "Email", value: "icellilercihan@gmail.com", href: "mailto:icellilercihan@gmail.com" },
+  { icon: MapPin, label: "Location", value: "Kocaeli, Turkey", href: null },
+];
+
+const availability = [
+  "Contract / Freelance",
+  "Part-time Engineering Roles",
+  "AI Consulting & Architecture",
+  "Open Source Collaboration",
+];
+
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 } as const,
+  viewport: { once: true } as const,
+  transition: { duration: 0.6, delay, ease: "easeOut" as const },
+});
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "12px 20px",
+  borderRadius: 9999,
+  border: "1px solid #d2d2d7",
+  fontSize: 17,
+  color: "#1d1d1f",
+  backgroundColor: "#ffffff",
+  outline: "none",
+  transition: "border-color 200ms ease",
+  fontFamily: "inherit",
+  letterSpacing: "-0.374px",
+};
+
+const inputFocusStyle: React.CSSProperties = {
+  borderColor: "#0066cc",
+};
+
+function PillInput({
+  id,
+  name,
+  type = "text",
+  placeholder,
+  required,
 }: {
-  prefix: string;
-  text: string;
-  delay: number;
+  id: string;
+  name: string;
+  type?: string;
+  placeholder: string;
+  required?: boolean;
 }) {
-  const [displayed, setDisplayed] = useState("");
-  const [showCursor, setShowCursor] = useState(false);
-  const [done, setDone] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (!isInView) return;
-    const startTimeout = setTimeout(() => {
-      setShowCursor(true);
-      let i = 0;
-      const interval = setInterval(() => {
-        i++;
-        setDisplayed(text.slice(0, i));
-        if (i >= text.length) {
-          clearInterval(interval);
-          setDone(true);
-        }
-      }, 25);
-      return () => clearInterval(interval);
-    }, delay);
-    return () => clearTimeout(startTimeout);
-  }, [isInView, text, delay]);
-
+  const [focused, setFocused] = useState(false);
   return (
-    <div ref={ref} className="flex items-start gap-1.5">
-      <span className="text-cyan shrink-0">{prefix}</span>
-      <span className="text-muted-foreground">
-        {displayed}
-        {showCursor && !done && (
-          <span className="inline-block w-[6px] h-[14px] bg-cyan animate-blink ml-0.5 align-text-bottom" />
-        )}
-      </span>
-    </div>
+    <input
+      id={id}
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      required={required}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={{ ...inputStyle, ...(focused ? inputFocusStyle : {}) }}
+    />
+  );
+}
+
+function PillTextarea({
+  id,
+  name,
+  placeholder,
+  rows = 5,
+  required,
+}: {
+  id: string;
+  name: string;
+  placeholder: string;
+  rows?: number;
+  required?: boolean;
+}) {
+  const [focused, setFocused] = useState(false);
+  return (
+    <textarea
+      id={id}
+      name={name}
+      placeholder={placeholder}
+      rows={rows}
+      required={required}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={{
+        ...inputStyle,
+        borderRadius: 18,
+        resize: "none",
+        ...(focused ? inputFocusStyle : {}),
+      }}
+    />
   );
 }
 
@@ -68,205 +119,162 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-24 md:py-32">
-      <div className="max-w-6xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <p className="text-sm font-mono text-cyan mb-2 flex items-center gap-2">
-            <span className="inline-block w-8 h-px bg-gradient-to-r from-cyan to-transparent" />
-            {"// let's connect"}
+    <section
+      id="contact"
+      style={{ backgroundColor: "#ffffff", padding: "80px 0" }}
+    >
+      <div style={{ maxWidth: 980, margin: "0 auto", padding: "0 22px" }}>
+
+        {/* Section header */}
+        <motion.div {...fadeUp(0)} style={{ marginBottom: 48 }}>
+          <p style={{ fontSize: 14, color: "#6e6e73", letterSpacing: "-0.224px", marginBottom: 8 }}>
+            Let's Connect
           </p>
-          <h2 className="text-3xl md:text-4xl font-heading font-bold tracking-tight">
-            Get in <span className="gradient-text">Touch</span>
+          <h2
+            style={{
+              fontSize: "clamp(34px, 4vw, 40px)",
+              fontWeight: 600,
+              lineHeight: 1.1,
+              letterSpacing: "-0.4px",
+              color: "#1d1d1f",
+            }}
+          >
+            Get in Touch
           </h2>
-          <p className="text-muted-foreground mt-4 max-w-xl">
-            Available for contract work, part-time roles, and exciting AI
-            projects. Let&apos;s build something extraordinary together.
+          <p style={{ fontSize: 17, color: "#6e6e73", marginTop: 8, maxWidth: 480, lineHeight: 1.47 }}>
+            Available for contract work, part-time roles, and exciting AI projects. Let&apos;s build something extraordinary together.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Terminal */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="rounded-2xl overflow-hidden glass"
-          >
-            {/* Terminal chrome */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-border/60 bg-surface/40">
-              <div className="flex gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-red-500/80" />
-                <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                <span className="w-3 h-3 rounded-full bg-green-500/80" />
-              </div>
-              <span className="text-[10px] font-mono text-muted-foreground/60 ml-2">
-                ~/contact — zsh
-              </span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+          {/* Info panel */}
+          <motion.div {...fadeUp(0.08)}>
+            <div style={{ marginBottom: 32 }}>
+              {contactInfo.map(({ icon: Icon, label, value, href }) => (
+                <div key={label} className="flex items-start gap-3" style={{ marginBottom: 20 }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 10,
+                      backgroundColor: "#f5f5f7",
+                      border: "1px solid #e0e0e0",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Icon size={16} color="#6e6e73" />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 12, color: "#86868b", letterSpacing: "-0.12px", marginBottom: 2 }}>
+                      {label}
+                    </p>
+                    {href ? (
+                      <a
+                        href={href}
+                        style={{ fontSize: 17, color: "#0066cc", textDecoration: "none", transition: "opacity 200ms ease" }}
+                        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.7"; }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
+                      >
+                        {value}
+                      </a>
+                    ) : (
+                      <p style={{ fontSize: 17, color: "#1d1d1f" }}>{value}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
 
-            {/* Terminal body */}
-            <div className="p-6 font-mono text-sm space-y-4">
-              <TypingLine prefix="$" text=' cat info.json' delay={200} />
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.8 }}
-                className="pl-4 space-y-3"
-              >
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-cyan flex-shrink-0" />
-                  <span className="text-foreground/80">
-                    icellilercihan@gmail.com
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <MapPin className="w-4 h-4 text-violet flex-shrink-0" />
-                  <span className="text-foreground/80">
-                    Kocaeli, Turkey
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Terminal className="w-4 h-4 text-pink flex-shrink-0" />
-                  <span className="text-foreground/80">
-                    Open to remote &amp; hybrid
-                  </span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 1.2 }}
-              >
-                <TypingLine prefix="$" text=' echo "Available for:"' delay={1400} />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 2.0 }}
-                className="pl-4 space-y-1.5 text-muted-foreground"
-              >
-                {[
-                  "Contract / Freelance",
-                  "Part-time Engineering Roles",
-                  "AI Consulting & Architecture",
-                  "Open Source Collaboration",
-                ].map((item, i) => (
-                  <motion.p
+            <div
+              style={{
+                borderTop: "1px solid #e0e0e0",
+                paddingTop: 24,
+              }}
+            >
+              <p style={{ fontSize: 14, fontWeight: 600, color: "#1d1d1f", letterSpacing: "-0.224px", marginBottom: 12 }}>
+                Available for
+              </p>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                {availability.map((item) => (
+                  <li
                     key={item}
-                    initial={{ opacity: 0, x: -8 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 2.2 + i * 0.1 }}
                     className="flex items-center gap-2"
+                    style={{ fontSize: 15, color: "#6e6e73", marginBottom: 8 }}
                   >
-                    <span className="text-cyan">→</span> {item}
-                  </motion.p>
+                    <span
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        backgroundColor: "#0066cc",
+                        flexShrink: 0,
+                      }}
+                    />
+                    {item}
+                  </li>
                 ))}
-              </motion.div>
-
-              <div className="flex items-center pt-2">
-                <span className="text-cyan">$</span>
-                <span className="ml-1 w-[6px] h-[14px] bg-cyan animate-blink" />
-              </div>
+              </ul>
             </div>
           </motion.div>
 
           {/* Contact form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl glass p-6 md:p-8"
-          >
-            <form onSubmit={handleSubmit} className="space-y-5">
+          <motion.div {...fadeUp(0.16)}>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
+                <label htmlFor="name" style={{ display: "block", fontSize: 14, fontWeight: 400, color: "#1d1d1f", marginBottom: 8, letterSpacing: "-0.224px" }}>
                   Name
                 </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  className="w-full px-4 py-3 rounded-xl bg-surface/40 border border-border/60 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-cyan/30 focus:border-cyan/50 transition-all text-sm input-glow"
-                  placeholder="Your name"
-                />
+                <PillInput id="name" name="name" placeholder="Your name" required />
               </div>
+
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
+                <label htmlFor="email" style={{ display: "block", fontSize: 14, fontWeight: 400, color: "#1d1d1f", marginBottom: 8, letterSpacing: "-0.224px" }}>
                   Email
                 </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-3 rounded-xl bg-surface/40 border border-border/60 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-cyan/30 focus:border-cyan/50 transition-all text-sm input-glow"
-                  placeholder="your@email.com"
-                />
+                <PillInput id="email" name="email" type="email" placeholder="your@email.com" required />
               </div>
+
               <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
+                <label htmlFor="message" style={{ display: "block", fontSize: 14, fontWeight: 400, color: "#1d1d1f", marginBottom: 8, letterSpacing: "-0.224px" }}>
                   Message
                 </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-xl bg-surface/40 border border-border/60 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-cyan/30 focus:border-cyan/50 transition-all text-sm resize-none input-glow"
-                  placeholder="Tell me about your project..."
-                />
+                <PillTextarea id="message" name="message" placeholder="Tell me about your project..." rows={5} required />
               </div>
-              <motion.button
+
+              <button
                 type="submit"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-                className={`w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl font-medium text-sm tracking-wide transition-all duration-500 relative overflow-hidden group ${
-                  submitted
-                    ? "bg-emerald-500/10 border border-emerald-500/40 text-emerald-400"
-                    : "glass border-cyan/25 text-foreground hover:border-cyan/50 hover:text-cyan hover:shadow-[0_0_30px_rgba(0,212,255,0.12)]"
-                }`}
+                className="flex items-center justify-center gap-2"
+                style={{
+                  width: "100%",
+                  backgroundColor: submitted ? "#34c759" : "#0066cc",
+                  color: "#ffffff",
+                  borderRadius: 9999,
+                  padding: "14px 22px",
+                  fontSize: 17,
+                  fontWeight: 400,
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "background 200ms ease, transform 150ms ease",
+                  fontFamily: "inherit",
+                  letterSpacing: "-0.374px",
+                  marginTop: 4,
+                }}
+                onMouseEnter={(e) => {
+                  if (!submitted) (e.currentTarget as HTMLButtonElement).style.backgroundColor = "#0077ed";
+                }}
+                onMouseLeave={(e) => {
+                  if (!submitted) (e.currentTarget as HTMLButtonElement).style.backgroundColor = "#0066cc";
+                }}
+                onMouseDown={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.97)"; }}
+                onMouseUp={(e) => { (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
               >
-                {/* Shimmer sweep */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan/[0.06] to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
-                {/* Subtle top light line */}
-                <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                {submitted ? (
-                  <>
-                    <Sparkles className="w-4 h-4" />
-                    Opening Mail Client...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-                    Send Message
-                  </>
-                )}
-              </motion.button>
+                <Send size={16} />
+                {submitted ? "Opening Mail Client..." : "Send Message"}
+              </button>
             </form>
           </motion.div>
         </div>

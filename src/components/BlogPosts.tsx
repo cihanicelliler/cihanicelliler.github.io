@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Calendar, Tag, ArrowRight } from "lucide-react";
+import { ExternalLink, Calendar, Clock } from "lucide-react";
 import Image from "next/image";
 
 interface MediumPost {
@@ -18,14 +18,34 @@ interface MediumPost {
   categories: string[];
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 } as const,
+  viewport: { once: true } as const,
+  transition: { duration: 0.6, delay, ease: "easeOut" as const },
+});
+
+function SkeletonCard() {
+  return (
+    <div
+      style={{
+        backgroundColor: "#ffffff",
+        border: "1px solid #e0e0e0",
+        borderRadius: 18,
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ height: 180, backgroundColor: "#f5f5f7" }} />
+      <div style={{ padding: 24 }}>
+        <div style={{ height: 12, width: "40%", backgroundColor: "#f5f5f7", borderRadius: 6, marginBottom: 12 }} />
+        <div style={{ height: 20, width: "85%", backgroundColor: "#f5f5f7", borderRadius: 6, marginBottom: 8 }} />
+        <div style={{ height: 20, width: "65%", backgroundColor: "#f5f5f7", borderRadius: 6, marginBottom: 16 }} />
+        <div style={{ height: 14, width: "95%", backgroundColor: "#f5f5f7", borderRadius: 6, marginBottom: 6 }} />
+        <div style={{ height: 14, width: "80%", backgroundColor: "#f5f5f7", borderRadius: 6 }} />
+      </div>
+    </div>
+  );
+}
 
 export default function BlogPosts() {
   const [posts, setPosts] = useState<MediumPost[]>([]);
@@ -44,200 +64,232 @@ export default function BlogPosts() {
         } else {
           setError(true);
         }
-      } catch (err) {
-        console.error("Error fetching Medium posts:", err);
+      } catch {
         setError(true);
       } finally {
         setLoading(false);
       }
     };
-
     fetchPosts();
   }, []);
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  const formatDate = (dateStr: string) =>
+    new Date(dateStr).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 
   const extractThumbnail = (description: string) => {
     const match = description.match(/<img[^>]+src="([^">]+)"/);
     return match ? match[1] : null;
   };
 
-  const stripHtml = (html: string) => {
-    return html.replace(/<[^>]*>?/gm, "").substring(0, 160) + "...";
-  };
+  const stripHtml = (html: string) =>
+    html.replace(/<[^>]*>?/gm, "").substring(0, 140) + "…";
 
   const estimateReadTime = (content: string) => {
-    const text = content.replace(/<[^>]*>?/gm, "");
-    const words = text.split(/\s+/).length;
+    const words = content.replace(/<[^>]*>?/gm, "").split(/\s+/).length;
     return Math.max(1, Math.round(words / 200));
   };
 
-  /* ─── Shimmer skeleton block ─── */
-  const ShimmerSkeleton = () => (
-    <div className="h-[400px] rounded-2xl glass overflow-hidden relative">
-      <div className="h-48 w-full bg-white/[0.02]" />
-      <div className="p-6 flex flex-col gap-4">
-        <div className="h-4 w-1/4 bg-white/[0.04] rounded-md relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" style={{ animation: "shimmer 2s linear infinite", backgroundSize: "400% 100%" }} />
-        </div>
-        <div className="h-6 w-3/4 bg-white/[0.04] rounded-md relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" style={{ animation: "shimmer 2s linear infinite", backgroundSize: "400% 100%", animationDelay: "0.2s" }} />
-        </div>
-        <div className="h-4 w-full bg-white/[0.04] rounded-md relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" style={{ animation: "shimmer 2s linear infinite", backgroundSize: "400% 100%", animationDelay: "0.4s" }} />
-        </div>
-        <div className="h-4 w-5/6 bg-white/[0.04] rounded-md" />
-        <div className="mt-auto h-4 w-1/3 bg-white/[0.04] rounded-md" />
-      </div>
-    </div>
-  );
-
   return (
-    <section id="blog" className="py-24 md:py-32">
-      <div className="max-w-6xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <p className="text-sm font-mono text-cyan mb-2 flex items-center gap-2">
-            <span className="inline-block w-8 h-px bg-gradient-to-r from-cyan to-transparent" />
-            {"// latest thoughts & writing"}
+    <section
+      id="blog"
+      style={{ backgroundColor: "#ffffff", padding: "80px 0" }}
+    >
+      <div style={{ maxWidth: 980, margin: "0 auto", padding: "0 22px" }}>
+
+        {/* Section header */}
+        <motion.div {...fadeUp(0)} style={{ marginBottom: 48 }}>
+          <p style={{ fontSize: 14, color: "#6e6e73", letterSpacing: "-0.224px", marginBottom: 8 }}>
+            Latest Thoughts &amp; Writing
           </p>
-          <h2 className="text-3xl md:text-4xl font-heading font-bold tracking-tight">
-            From the <span className="gradient-text">Blog</span>
+          <h2
+            style={{
+              fontSize: "clamp(34px, 4vw, 40px)",
+              fontWeight: 600,
+              lineHeight: 1.1,
+              letterSpacing: "-0.4px",
+              color: "#1d1d1f",
+            }}
+          >
+            From the Blog
           </h2>
+          <a
+            href="https://medium.com/@cihanicelliler"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5"
+            style={{ fontSize: 15, color: "#0066cc", textDecoration: "none", marginTop: 12, transition: "opacity 200ms ease" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.7"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
+          >
+            View all on Medium
+            <ExternalLink size={13} />
+          </a>
         </motion.div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <ShimmerSkeleton key={i} />
-            ))}
+        {/* Loading state */}
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
           </div>
-        ) : error ? (
-          <div className="text-center py-12 glass rounded-2xl">
-            <p className="text-muted-foreground mb-4">
-              Oops! Couldn&apos;t load the posts right now.
+        )}
+
+        {/* Error state */}
+        {!loading && error && (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "48px 24px",
+              border: "1px solid #e0e0e0",
+              borderRadius: 18,
+              backgroundColor: "#f5f5f7",
+            }}
+          >
+            <p style={{ fontSize: 17, color: "#6e6e73", marginBottom: 16 }}>
+              Couldn&apos;t load posts right now.
             </p>
             <a
               href="https://medium.com/@cihanicelliler"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-cyan hover:underline inline-flex items-center gap-2"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                backgroundColor: "#0066cc",
+                color: "#ffffff",
+                borderRadius: 9999,
+                padding: "10px 20px",
+                fontSize: 15,
+                textDecoration: "none",
+              }}
             >
-              Visit my Medium profile <ExternalLink className="w-4 h-4" />
+              Visit Medium profile
+              <ExternalLink size={13} />
             </a>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        )}
+
+        {/* Posts grid */}
+        {!loading && !error && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {posts.map((post, i) => {
-              const thumbnail = post.thumbnail || extractThumbnail(post.description) || "/images/banner.png";
+              const thumbnail = post.thumbnail || extractThumbnail(post.description) || null;
               const readTime = estimateReadTime(post.content || post.description);
-              const isFirst = i === 0;
 
               return (
-                <motion.div
+                <motion.a
                   key={post.guid}
-                  custom={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={cardVariants}
-                  className={`group flex flex-col rounded-2xl glass overflow-hidden transition-all duration-500 hover:border-cyan/20 hover:shadow-[0_0_40px_rgba(0,212,255,0.06)] ${
-                    isFirst ? "md:col-span-2 lg:col-span-1" : ""
-                  }`}
+                  href={post.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  {...fadeUp(i * 0.07)}
+                  style={{
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e0e0e0",
+                    borderRadius: 18,
+                    overflow: "hidden",
+                    textDecoration: "none",
+                    display: "flex",
+                    flexDirection: "column",
+                    transition: "border-color 200ms ease, box-shadow 200ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    el.style.borderColor = "#0066cc";
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    el.style.borderColor = "#e0e0e0";
+                  }}
                 >
                   {/* Thumbnail */}
-                  <div className="relative h-48 w-full overflow-hidden bg-surface/30">
-                    <Image
-                      src={thumbnail}
-                      alt={post.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-70" />
-                    {/* Read time badge */}
-                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-background/60 backdrop-blur-md text-[10px] font-mono text-muted-foreground">
-                      {readTime} min read
+                  {thumbnail && (
+                    <div style={{ height: 180, overflow: "hidden", backgroundColor: "#f5f5f7", borderRadius: "18px 18px 0 0", position: "relative", flexShrink: 0 }}>
+                      <Image
+                        src={thumbnail}
+                        alt={post.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
                     </div>
-                  </div>
+                  )}
 
-                  <div className="flex flex-col p-6 flex-1">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Calendar className="w-3.5 h-3.5 text-cyan/50" />
-                      <span className="text-xs font-mono text-muted-foreground/70">
+                  {/* Content */}
+                  <div style={{ padding: 24, flex: 1, display: "flex", flexDirection: "column" }}>
+                    {/* Meta */}
+                    <div className="flex items-center gap-3 mb-3" style={{ flexWrap: "wrap" }}>
+                      <span
+                        className="flex items-center gap-1"
+                        style={{ fontSize: 11, color: "#86868b", letterSpacing: "-0.12px" }}
+                      >
+                        <Calendar size={11} />
                         {formatDate(post.pubDate)}
+                      </span>
+                      <span
+                        className="flex items-center gap-1"
+                        style={{ fontSize: 11, color: "#86868b", letterSpacing: "-0.12px" }}
+                      >
+                        <Clock size={11} />
+                        {readTime} min read
                       </span>
                     </div>
 
-                    <h3 className="text-lg font-heading font-bold mb-3 line-clamp-2 group-hover:text-cyan transition-colors duration-300">
-                      <a href={post.link} target="_blank" rel="noopener noreferrer">
-                        {post.title}
-                      </a>
+                    {/* Title */}
+                    <h3
+                      style={{
+                        fontSize: 17,
+                        fontWeight: 600,
+                        color: "#1d1d1f",
+                        lineHeight: 1.35,
+                        letterSpacing: "-0.374px",
+                        marginBottom: 8,
+                      }}
+                    >
+                      {post.title}
                     </h3>
 
-                    <p className="text-sm text-muted-foreground/80 leading-relaxed mb-6 line-clamp-3">
+                    {/* Excerpt */}
+                    <p
+                      style={{
+                        fontSize: 14,
+                        color: "#6e6e73",
+                        lineHeight: 1.47,
+                        letterSpacing: "-0.224px",
+                        flex: 1,
+                        marginBottom: 16,
+                      }}
+                    >
                       {stripHtml(post.description)}
                     </p>
 
-                    <div className="mt-auto">
-                      <div className="flex flex-wrap gap-2 mb-5">
-                        {post.categories.slice(0, 3).map((tag) => (
+                    {/* Tags */}
+                    {post.categories?.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {post.categories.slice(0, 3).map((cat) => (
                           <span
-                            key={tag}
-                            className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded-lg bg-cyan/5 text-cyan/60 border border-cyan/10"
+                            key={cat}
+                            style={{
+                              fontSize: 11,
+                              color: "#6e6e73",
+                              border: "1px solid #e0e0e0",
+                              borderRadius: 6,
+                              padding: "2px 8px",
+                              backgroundColor: "#f5f5f7",
+                              letterSpacing: "-0.12px",
+                            }}
                           >
-                            <Tag className="w-2.5 h-2.5" />
-                            {tag}
+                            {cat}
                           </span>
                         ))}
                       </div>
-
-                      <a
-                        href={post.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-cyan transition-colors group/link"
-                      >
-                        Read on Medium
-                        <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform duration-300" />
-                      </a>
-                    </div>
+                    )}
                   </div>
-                </motion.div>
+                </motion.a>
               );
             })}
           </div>
         )}
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-12 text-center"
-        >
-          <a
-            href="https://medium.com/@cihanicelliler"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border/60 text-foreground font-medium hover:bg-white/[0.03] hover:border-white/20 transition-all duration-300 group"
-          >
-            View all articles
-            <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </a>
-        </motion.div>
       </div>
     </section>
   );
